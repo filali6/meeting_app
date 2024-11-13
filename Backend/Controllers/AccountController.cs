@@ -43,7 +43,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(LoginDTO loginUser)
+        public async Task<ActionResult<GetUserLoginDTO>> Login(LoginDTO loginUser)
         {
             AppUser? user =await _db.Users.FirstOrDefaultAsync(x=>x.UserName==loginUser.username);
             if(user==null)return Unauthorized("user does not exist");
@@ -54,7 +54,7 @@ namespace Backend.Controllers
                 }
             }
             var token = CreateToken(user);
-            return token;
+            return new GetUserLoginDTO(){token=token,username=user.UserName};
         }
 
         private string CreateToken(AppUser user)
