@@ -1,0 +1,19 @@
+@if(!AccountService.currentUser()){
+@if (!registerMode) {
+<div class="container me-2">
+    <div style="text-align: center;margin-top: auto;">
+        <h1>Find your match</h1>
+        <button type="button" class="btn btn-secondary btn-lg me-2" (click)="RegisterToggle()">
+            register now
+          </button>
+    </div>
+</div>
+}
+@else {
+<div class="container text-center">
+    <h2>here the register form</h2>
+    <app-register-form 
+    [usersFromHome]="users"
+    (cancelRegister)="RegisterToggle()"></app-register-form>
+</div>}
+}

@@ -17,7 +17,7 @@ namespace Backend.Controllers
         private readonly IConfiguration _conf=configuration;
         private readonly DataContext _db = context;
         [HttpPost("register")]
-        public async Task<ActionResult<AppUser>> Register(RegisterDTO regiterUser)
+        public async Task<ActionResult<GetUserLoginDTO>> Register(RegisterDTO regiterUser)
         {
             try
             {
@@ -34,7 +34,9 @@ namespace Backend.Controllers
                 }
                 await _db.Users.AddAsync(user);
                 await _db.SaveChangesAsync();
-                return Ok(user);
+                var token = CreateToken(user);
+                return new GetUserLoginDTO(){token=token,username=user.UserName};
+                
             }
             catch (Exception e)
             {

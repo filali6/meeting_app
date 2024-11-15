@@ -1,4 +1,5 @@
 using Backend.Data;
+using Backend.DTOs;
 using Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,9 +24,12 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> Users()
+        public async Task<ActionResult<IEnumerable<GetUsersDTO>>> Users()
         {
-            IEnumerable<AppUser> res=await  _db.Users.ToListAsync();
+            IEnumerable<GetUsersDTO> res=await  _db.Users.Select(u=>new GetUsersDTO{
+                username = u.UserName,
+                id = u.Id
+            }).ToListAsync();
             if(res.Any())  return Ok(res);
             else  return NotFound();
         }
