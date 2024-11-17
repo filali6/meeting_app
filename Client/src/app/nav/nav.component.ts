@@ -20,7 +20,6 @@ export class NavComponent {
     this.AccountService.login(this.model)
       .subscribe({
         next :response => console.log(response),
-        error : err => this.toast.error(err.error),
         complete:() => console.log("login completed")
       });
   }

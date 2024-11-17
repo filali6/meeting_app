@@ -22,6 +22,7 @@ export class HomeComponent {
     this.getUsers();
   }
   getUsers(){
+    if(!this.users)
     this.UserServices.getUsers()
     .subscribe({
       next : response => this.users=response,

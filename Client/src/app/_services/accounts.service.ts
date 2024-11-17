@@ -17,7 +17,6 @@ export class AccountsService {
     return this.http.post<User>(this.BaseUrl + "/login", model).pipe(
       map(user => {
         if (user) {
-          console.log("connected : ",user);
           localStorage.setItem("user", JSON.stringify(user));
           this.currentUser.set(user);
           this.router.navigateByUrl('members')
@@ -36,7 +35,6 @@ export class AccountsService {
     auxModel.username = model.username;
     return this.http.post<User>(this.BaseUrl + "/register", auxModel).pipe(
       map(user => {
-        console.log("return map register", user);
         localStorage.setItem("user", JSON.stringify(user));
         this.currentUser.set(user);
         return user

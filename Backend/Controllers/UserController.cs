@@ -19,7 +19,7 @@ namespace Backend.Controllers
         public async Task<ActionResult<AppUser>> GetByID(int id)
         {
             AppUser? res= await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if(res == null) return NotFound();
+            if(res == null) return NotFound("USER NOT FOUND");
             else return Ok(res);
         }
 

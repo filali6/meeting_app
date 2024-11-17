@@ -24,7 +24,6 @@ register()
     this.accountService.register(this.model).subscribe(
     {
       next : response =>console.log("response: ",response),
-      error : err=>{console.log("error");console.log(err);this.toaster.error(err.error);},
       complete : ()=>console.log("register completed")
     }
     );

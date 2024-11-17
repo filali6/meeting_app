@@ -17,18 +17,17 @@ namespace Backend.Controllers
         private readonly IConfiguration _conf=configuration;
         private readonly DataContext _db = context;
         [HttpPost("register")]
-        public async Task<ActionResult<GetUserLoginDTO>> Register(RegisterDTO regiterUser)
+        public async Task<ActionResult<GetUserLoginDTO>> Register(RegisterDTO registerUser)
         {
-            try
-            {
-                if (await UserExist(regiterUser.username)) throw new Exception("username exists");
+            
+                if (await UserExist(registerUser.username)) throw new Exception("username exists");
                 AppUser user;
                 using (var hmac = new HMACSHA256())
                 {
                     user = new AppUser
                     {
-                        UserName = regiterUser.username,
-                        PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(regiterUser.password)),
+                        UserName = registerUser.username,
+                        PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerUser.password)),
                         PasswordSalt = hmac.Key
                     };
                 }
@@ -37,11 +36,7 @@ namespace Backend.Controllers
                 var token = CreateToken(user);
                 return new GetUserLoginDTO(){token=token,username=user.UserName};
                 
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+       
         }
 
         [HttpPost("login")]

@@ -1,1 +1,6 @@
 Backend/appsettings.json
+Backend/Controllers/BuggyController.cs
+Client/src/app/error-tester/error-tester.component.ts
+Client/src/app/error-tester/error-tester.component.html
+Client/src/app/error-tester/error-tester.component.css
+Client/src/app/error-tester
