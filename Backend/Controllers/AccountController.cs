@@ -21,20 +21,21 @@ namespace Backend.Controllers
         {
             
                 if (await UserExist(registerUser.username)) throw new Exception("username exists");
-                AppUser user;
-                using (var hmac = new HMACSHA256())
-                {
-                    user = new AppUser
-                    {
-                        UserName = registerUser.username,
-                        PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerUser.password)),
-                        PasswordSalt = hmac.Key
-                    };
-                }
-                await _db.Users.AddAsync(user);
-                await _db.SaveChangesAsync();
-                var token = CreateToken(user);
-                return new GetUserLoginDTO(){token=token,username=user.UserName};
+                return Ok();
+                // AppUser user;
+                // using (var hmac = new HMACSHA256())
+                // {
+                //     user = new AppUser
+                //     {
+                //         UserName = registerUser.username,
+                //         PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerUser.password)),
+                //         PasswordSalt = hmac.Key
+                //     };
+                // }
+                // await _db.Users.AddAsync(user);
+                // await _db.SaveChangesAsync();
+                // var token = CreateToken(user);
+                // return new GetUserLoginDTO(){token=token,username=user.UserName};
                 
        
         }

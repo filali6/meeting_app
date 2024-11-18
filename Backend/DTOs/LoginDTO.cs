@@ -11,5 +11,5 @@ public class LoginDTO
     [Required]
     [System.ComponentModel.PasswordPropertyText]
     [MinLength(3)]
-    public required string password { get; set; }="";
+    public  string password { get; set; }="";
 }

@@ -1,0 +1,205 @@
+[
+    {
+      "UserName": "Houssem123",
+      "DateBirth": "1995-08-15",
+      "KnownAs": "Houssem",
+      "Created": "2024-11-17T00:00:00Z",
+      "LastActive": "2024-11-17T00:00:00Z",
+      "IsMale": true,
+      "Introduction": "Software engineer passionate about technology.",
+      "Interests": "Coding, football, gaming",
+      "LookingFor": "Friendship and career opportunities",
+      "City": "Tunis",
+      "Country": "Tunisia",
+      "Photos": [
+        {
+          "IsMain": true,
+          "Url": "https://randomuser.me/portraits/men/1.jpg"
+        },
+        {
+          "IsMain": false,
+          "Url": "https://randomuser.me/portraits/men/2.jpg"
+        }
+      ]
+    },
+    {
+      "UserName": "Amira89",
+      "DateBirth": "1989-12-05",
+      "KnownAs": "Amira",
+      "Created": "2024-11-17T00:00:00Z",
+      "LastActive": "2024-11-17T00:00:00Z",
+      "IsMale": false,
+      "Introduction": "Entrepreneur and coffee lover.",
+      "Interests": "Cooking, hiking, reading",
+      "LookingFor": "Networking and collaborations",
+      "City": "Sousse",
+      "Country": "Tunisia",
+      "Photos": [
+        {
+          "IsMain": true,
+          "Url": "https://randomuser.me/portraits/women/1.jpg"
+        },
+        {
+          "IsMain": false,
+          "Url": "https://randomuser.me/portraits/women/2.jpg"
+        }
+      ]
+    },
+    {
+      "UserName": "KarimCoder",
+      "DateBirth": "1992-03-20",
+      "KnownAs": "Karim",
+      "Created": "2024-11-17T00:00:00Z",
+      "LastActive": "2024-11-17T00:00:00Z",
+      "IsMale": true,
+      "Introduction": "Full-stack developer from the heart of Tunisia.",
+      "Interests": "Programming, music, travel",
+      "LookingFor": "Learning and sharing experiences",
+      "City": "Monastir",
+      "Country": "Tunisia",
+      "Photos": [
+        {
+          "IsMain": true,
+          "Url": "https://randomuser.me/portraits/men/3.jpg"
+        }
+      ]
+    },
+    {
+      "UserName": "SaharBlogger",
+      "DateBirth": "1998-07-30",
+      "KnownAs": "Sahar",
+      "Created": "2024-11-17T00:00:00Z",
+      "LastActive": "2024-11-17T00:00:00Z",
+      "IsMale": false,
+      "Introduction": "Lifestyle blogger and avid traveler.",
+      "Interests": "Photography, blogging, food",
+      "LookingFor": "New friends and inspiration",
+      "City": "Djerba",
+      "Country": "Tunisia",
+      "Photos": [
+        {
+          "IsMain": true,
+          "Url": "https://randomuser.me/portraits/women/3.jpg"
+        },
+        {
+          "IsMain": false,
+          "Url": "https://randomuser.me/portraits/women/4.jpg"
+        }
+      ]
+    },
+    {
+      "UserName": "Oussama1994",
+      "DateBirth": "1994-04-12",
+      "KnownAs": "Oussama",
+      "Created": "2024-11-17T00:00:00Z",
+      "LastActive": "2024-11-17T00:00:00Z",
+      "IsMale": true,
+      "Introduction": "Adventure seeker and nature lover.",
+      "Interests": "Camping, climbing, photography",
+      "LookingFor": "Adventure buddies",
+      "City": "Kairouan",
+      "Country": "Tunisia",
+      "Photos": [
+        {
+          "IsMain": true,
+          "Url": "https://randomuser.me/portraits/men/4.jpg"
+        }
+      ]
+    },
+    {
+      "UserName": "FatmaArtist",
+      "DateBirth": "1990-09-18",
+      "KnownAs": "Fatma",
+      "Created": "2024-11-17T00:00:00Z",
+      "LastActive": "2024-11-17T00:00:00Z",
+      "IsMale": false,
+      "Introduction": "Artist and gallery owner.",
+      "Interests": "Painting, museums, history",
+      "LookingFor": "Art enthusiasts",
+      "City": "Sfax",
+      "Country": "Tunisia",
+      "Photos": [
+        {
+          "IsMain": true,
+          "Url": "https://randomuser.me/portraits/women/5.jpg"
+        }
+      ]
+    },
+    {
+      "UserName": "AhmedExplorer",
+      "DateBirth": "1987-01-25",
+      "KnownAs": "Ahmed",
+      "Created": "2024-11-17T00:00:00Z",
+      "LastActive": "2024-11-17T00:00:00Z",
+      "IsMale": true,
+      "Introduction": "Explorer and tech enthusiast.",
+      "Interests": "Travel, tech, photography",
+      "LookingFor": "Collaborative projects",
+      "City": "Gabes",
+      "Country": "Tunisia",
+      "Photos": [
+        {
+          "IsMain": true,
+          "Url": "https://randomuser.me/portraits/men/5.jpg"
+        }
+      ]
+    },
+    {
+      "UserName": "SalmaWriter",
+      "DateBirth": "1991-06-10",
+      "KnownAs": "Salma",
+      "Created": "2024-11-17T00:00:00Z",
+      "LastActive": "2024-11-17T00:00:00Z",
+      "IsMale": false,
+      "Introduction": "Writer and storyteller.",
+      "Interests": "Writing, poetry, reading",
+      "LookingFor": "Literary communities",
+      "City": "Mahdia",
+      "Country": "Tunisia",
+      "Photos": [
+        {
+          "IsMain": true,
+          "Url": "https://randomuser.me/portraits/women/6.jpg"
+        }
+      ]
+    },
+    {
+      "UserName": "NaderChef",
+      "DateBirth": "1993-11-05",
+      "KnownAs": "Nader",
+      "Created": "2024-11-17T00:00:00Z",
+      "LastActive": "2024-11-17T00:00:00Z",
+      "IsMale": true,
+      "Introduction": "Professional chef with a love for flavors.",
+      "Interests": "Cooking, food tasting, teaching",
+      "LookingFor": "Culinary collaborations",
+      "City": "Bizerte",
+      "Country": "Tunisia",
+      "Photos": [
+        {
+          "IsMain": true,
+          "Url": "https://randomuser.me/portraits/men/6.jpg"
+        }
+      ]
+    },
+    {
+      "UserName": "RimTraveler",
+      "DateBirth": "1996-02-15",
+      "KnownAs": "Rim",
+      "Created": "2024-11-17T00:00:00Z",
+      "LastActive": "2024-11-17T00:00:00Z",
+      "IsMale": false,
+      "Introduction": "Travel enthusiast exploring the world.",
+      "Interests": "Travel, languages, cultures",
+      "LookingFor": "Travel partners",
+      "City": "Tozeur",
+      "Country": "Tunisia",
+      "Photos": [
+        {
+          "IsMain": true,
+          "Url": "https://randomuser.me/portraits/women/7.jpg"
+        }
+      ]
+    }
+  ]
+  

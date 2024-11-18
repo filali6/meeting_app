@@ -1,6 +1,7 @@
 using Backend.Data;
 using Backend.DTOs;
 using Backend.Models;
+using Backend.Repositories.UsersRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,29 +10,27 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend.Controllers
 {
 
-    public class UserController(ILogger<WeatherForecastController> logger, DataContext context) : BaseApiController
+    public class UserController(ILogger<WeatherForecastController> logger, IUsersRepository userRepository) : BaseApiController
     {
         private readonly ILogger<WeatherForecastController> _logger = logger;
-        private readonly DataContext _db = context;
-
-        [HttpGet("{id}")]
-        [Authorize]
-        public async Task<ActionResult<AppUser>> GetByID(int id)
-        {
-            AppUser? res= await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
-            if(res == null) return NotFound("USER NOT FOUND");
-            else return Ok(res);
-        }
+        private readonly IUsersRepository userRepository = userRepository;
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetUsersDTO>>> Users()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            IEnumerable<GetUsersDTO> res=await  _db.Users.Select(u=>new GetUsersDTO{
-                username = u.UserName,
-                id = u.Id
-            }).ToListAsync();
-            if(res.Any())  return Ok(res);
-            else  return NotFound();
+            var users = await userRepository.GetMembersAsync();
+
+            return Ok(users);
+        }
+
+        [HttpGet("{username}")]  // /api/users/2
+        public async Task<ActionResult<MemberDto>> GetUser(string username)
+        {
+            var user = await userRepository.GetMemberAsync(username);
+
+            if (user == null) return NotFound();
+
+            return user;
         }
     }
 }

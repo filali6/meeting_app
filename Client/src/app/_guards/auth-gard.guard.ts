@@ -9,6 +9,6 @@ export const authGardGuard: CanActivateFn = (route, state) => {
   const router= inject(Router);
   if(accountService.currentUser()) return true;
   router.navigateByUrl("");
-  toast.error("ressource needs authentificatiobn!")
+  toast.error("ressource needs authentification!")
   return false;
 };
