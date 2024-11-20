@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend.Controllers
 {
 
+[Authorize]
     public class UserController(ILogger<WeatherForecastController> logger, IUsersRepository userRepository) : BaseApiController
     {
         private readonly ILogger<WeatherForecastController> _logger = logger;

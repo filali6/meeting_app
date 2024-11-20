@@ -13,21 +13,12 @@ import { AccountsService } from '../_services/accounts.service';
 export class HomeComponent {
 
   registerMode=false;
-  users:any={};
   UserServices=inject(UsersService);
   AccountService=inject(AccountsService);
   RegisterToggle()
   {
     this.registerMode=!this.registerMode;
-    this.getUsers();
+    //this.getUsers();
   }
-  getUsers(){
-    if(!this.users)
-    this.UserServices.getUsers()
-    .subscribe({
-      next : response => this.users=response,
-      error : err=>console.log(err),
-      complete : ()=>console.log("getUsers completed")
-    });
-  }
+
 }

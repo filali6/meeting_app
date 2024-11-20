@@ -15,7 +15,6 @@ import { ToastrService } from 'ngx-toastr';
 export class RegisterFormComponent {
 model:any={};
 toaster = inject(ToastrService);
-usersFromHome = input.required<any>();
 cancelRegister=output();
 accountService=inject(AccountsService);
 register()

@@ -4,3 +4,5 @@ Client/src/app/error-tester/error-tester.component.ts
 Client/src/app/error-tester/error-tester.component.html
 Client/src/app/error-tester/error-tester.component.css
 Client/src/app/error-tester
+Client/src/environments/environment.development.ts
+Client/src/environments/environment.ts

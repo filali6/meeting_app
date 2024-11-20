@@ -1,1 +1,12 @@
 <p>member-list works!</p>
+
+    <div class="container">
+    <div class="row">
+        
+        @for (member of members; track $index) {
+            <div class="Mycard col-3" style="padding: 1rem;">
+        <app-member-card [member]="member"></app-member-card>
+    </div>
+    }
+    </div>
+</div>
