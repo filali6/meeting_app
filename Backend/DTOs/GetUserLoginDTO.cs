@@ -6,4 +6,5 @@ public class GetUserLoginDTO
 {
     public required string username { get; set; }
     public required string token { get; set; }
+    public string? url {get;set;}
 }

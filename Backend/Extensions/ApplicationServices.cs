@@ -1,6 +1,9 @@
 using System;
 using Backend.Data;
-using Backend.Repositories.UsersRepository;
+using Backend.Helpers;
+using Backend.Services.AccountService;
+using Backend.Services.PhotoService;
+using Backend.Services.UsersService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 
@@ -16,8 +19,11 @@ public static class ApplicationServices
             opt.UseSqlite(conf.GetConnectionString("DefaultConnection"));
         });
         collection.AddCors();
-        collection.AddScoped<IUsersRepository,UsersRepository>();
+        collection.AddScoped<IUsersService,UsersService>();
+        collection.AddScoped<IAccountService,AccountService>();
         collection.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        collection.Configure<CloudinarySettings>(conf.GetSection("CloudinarySettings"));
+        collection.AddScoped<IPhotoService,PhotoService>();
         return collection;
     }
 }

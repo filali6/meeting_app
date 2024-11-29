@@ -2,7 +2,7 @@
     <div class="card border border-secondary rounded h-100"  style=" width: 18rem; opacity: 1;">
       <img class="card-img-top" [src]="member()?.photoUrl" alt="Card image cap" [alt]="member()?.userName">
       <div class="card-body">
-        <h5 class="card-title">{{member()?.knownAs}}</h5>
+        <h5 class="card-title">{{member()?.userName}}</h5>
         <p class="card-text">{{member()?.introduction}}</p>
         <a  routerLink="/member/{{member()?.userName}}" class="btn btn-light">Inspect</a>
       </div>

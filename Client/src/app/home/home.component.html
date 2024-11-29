@@ -16,3 +16,11 @@
     (cancelRegister)="RegisterToggle()"></app-register-form>
 </div>}
 }
+@else {
+    <div class="container me-2">
+        <div style="text-align: center;margin-top: auto;">
+            <h1>Find your match {{AccountService.currentUser()?.username}}</h1>
+
+        </div>
+    </div>
+}

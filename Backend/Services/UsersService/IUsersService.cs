@@ -2,9 +2,9 @@ using System;
 using Backend.DTOs;
 using Backend.Models;
 
-namespace Backend.Repositories.UsersRepository;
+namespace Backend.Services.UsersService;
 
-public interface IUsersRepository
+public interface IUsersService
 {
     void Update(AppUser user);
     Task<bool> SaveAllAsync();
@@ -13,4 +13,7 @@ public interface IUsersRepository
     Task<AppUser?> GetUserByUsernameAsync(string username);
     Task<IEnumerable<MemberDto>> GetMembersAsync();
    Task<MemberDto?> GetMemberAsync(string username);
+   Task UpdateMember(string username,EditMemberDTO member);
+   Task toMainPhoto(string username, int photoId);
+   Task DeletePhoto(string username, int photoId);
 }

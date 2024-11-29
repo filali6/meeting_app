@@ -11,14 +11,11 @@ import { MemberCardComponent } from "../member-card/member-card.component";
   styleUrl: './member-list.component.css'
 })
 export class MemberListComponent implements OnInit {
-  private membersService=inject(MembersService);
-  members!: Member[] | null;
+   membersService=inject(MembersService);
   ngOnInit(): void {
     this.loadMembers()
   }
   loadMembers(){
-    this.membersService.getMembers().subscribe({
-      next : response =>{console.log(response);this.members=response;}
-    });
+    this.membersService.getMembers();
   }
 }

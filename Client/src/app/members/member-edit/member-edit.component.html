@@ -1,0 +1,84 @@
+@if (member) {
+<div class="container-xl px-4 mt-4">
+
+    <hr class="mt-0 mb-4">
+    <div class="row">
+        <div class="col-xl-4">
+            <!-- Profile picture card-->
+            <div class="card mb-4 mb-xl-0 ">
+                <div class="card-header">Profile Picture</div>
+                <div class="card-body text-center">
+                    <!-- Profile picture image-->
+                    <img class="img-account-profile rounded-circle mb-2" [src]="accountSevice.currentUser()?.url" alt="">
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8">
+            <tabset #staticTabs>
+                <tab heading="Edit profile"> @if (editForm.dirty) {<div class="alert alert-warning">
+                        <p class="mb-0 text-dark">Changes has been made</p>
+                    </div>}
+                    <!-- Account details card-->
+                    <div class="card mb-4">
+
+
+                        <div class="card-body">
+
+                            <form id="editForm" #editForm="ngForm" (ngSubmit)="editProfile()">
+                                <!-- Form Group (username)-->
+
+                                <!-- Form Row-->
+                                <div class="row gx-3 mb-3">
+                                    <!-- Form Group (first name)-->
+                                    <div class="col-md-6">
+                                        <label class="small mb-1" for="knownAs">Known As</label>
+                                        <input class="form-control" id="knownAs" name="knownAs" type="text"
+                                            placeholder="known as" [(ngModel)]="member.knownAs">
+                                    </div>
+
+                                </div>
+                                <div class="row gx-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="small mb-1" for="country">Country</label>
+                                        <input class="form-control" name="country" id="country" type="text"
+                                            placeholder="Enter your Country" [(ngModel)]="member.country">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="small mb-1" for="city">Location</label>
+                                        <input class="form-control" id="city" type="text" name="city"
+                                            placeholder="Enter your location" [(ngModel)]="member.city">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="small mb-1" for="introduction">Introduction</label>
+                                    <textarea class="form-control" name="introduction" id="introduction"
+                                        placeholder="Enter your intro" [(ngModel)]="member.introduction"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="small mb-1" for="interests">Interests</label>
+                                    <textarea class="form-control" name="interests" id="interests"
+                                        placeholder="Enter your interests" [(ngModel)]="member.interests"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="small mb-1" for="interests">looking For</label>
+                                    <textarea class="form-control" name="lookingFor" id="lookingFor"
+                                        placeholder="Enter your interests" [(ngModel)]="member.lookingFor"></textarea>
+                                </div>
+                                <!-- Form Row-->
+
+                                <!-- Save changes button-->
+                                <button class="btn btn-primary" type="submit" [disabled]="!editForm.dirty">Save
+                                    changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Edit photos"><div class="card mb-4"><app-add-photo  [member]="member" (memberParent)="memberChanged($event)"></app-add-photo></div></tab>
+            </tabset>
+
+        </div>
+    </div>
+</div>
+}
