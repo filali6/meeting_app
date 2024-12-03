@@ -4,6 +4,7 @@ import { User } from '../_models/User';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { UserRegister } from '../_models/UserRegister';
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +31,9 @@ export class AccountsService {
     localStorage.clear();
     this.router.navigateByUrl('')
   }
-  register(model: any) {
-    var auxModel: any = {};
-    auxModel.password = model.password;
-    auxModel.username = model.username;
-    return this.http.post<User>(this.BaseUrl + "/egister", auxModel).pipe(
+  register(model: UserRegister) {
+
+    return this.http.post<User>(this.BaseUrl + "register", model).pipe(
       map(user => {
         localStorage.setItem("user", JSON.stringify(user));
         this.currentUser.set(user);

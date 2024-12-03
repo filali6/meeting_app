@@ -9,7 +9,7 @@
                 <div class="card-header">Profile Picture</div>
                 <div class="card-body text-center">
                     <!-- Profile picture image-->
-                    <img class="img-account-profile rounded-circle mb-2" [src]="accountSevice.currentUser()?.url" alt="">
+                    <img class="img-account-profile rounded-circle mb-2" src="{{accountSevice.currentUser()?.url || '../assets/user.png'}}" alt="">
 
 
                 </div>

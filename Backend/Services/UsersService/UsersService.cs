@@ -6,6 +6,7 @@ using Backend.DTOs;
 using Backend.Models;
 using Backend.Services.PhotoService;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 
 namespace Backend.Services.UsersService;
 
@@ -17,10 +18,11 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
 
     public async Task<MemberDto?> GetMemberAsync(string username)
     {
-        return await context.Users
+        var m=await context.Users
             .Where(x => x.UserName.ToLower() == username.ToLower())
             .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
             .SingleOrDefaultAsync();
+        return m;
     }
     public async Task<IEnumerable<MemberDto>> GetMembersAsync()
     {

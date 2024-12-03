@@ -14,48 +14,63 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Backend.Services.AccountService;
 
-public class AccountService (DataContext db,IConfiguration conf, IMapper mapper) : IAccountService
+public class AccountService(DataContext db, IConfiguration conf, IMapper mapper) : IAccountService
 {
-    private DataContext _db=db;
-    private IMapper _mapper=mapper;
-    private IConfiguration _conf=conf;
+    private DataContext _db = db;
+    private IMapper _mapper = mapper;
+    private IConfiguration _conf = conf;
     public async Task<GetUserLoginDTO?> LoginAsync(LoginDTO loginUser)
     {
-            AppUser? user =await _db.Users
-                .Include(u=>u.Photos)
-                .FirstOrDefaultAsync(x=>x.UserName==loginUser.username);
-            if(user==null)return null;
-            using(var hmac=new HMACSHA256(user.PasswordSalt)){
-                var compHash=hmac.ComputeHash(Encoding.UTF8.GetBytes(loginUser.password));
-                for(int i=0 ; i<compHash.Length;i++){
-                    if(compHash[i]!=user.PasswordHash[i])return null;
-                }
+        AppUser? user = await _db.Users
+            .Include(u => u.Photos)
+            .FirstOrDefaultAsync(x => x.UserName == loginUser.username);
+        if (user == null) return null;
+        using (var hmac = new HMACSHA256(user.PasswordSalt))
+        {
+            var compHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginUser.password));
+            for (int i = 0; i < compHash.Length; i++)
+            {
+                if (compHash[i] != user.PasswordHash[i]) return null;
             }
-            var token = CreateToken(user);
-            return new GetUserLoginDTO(){token=token,username=user.UserName,url=user.Photos.FirstOrDefault(a=>a.IsMain)!.Url};
+        }
+        var token = CreateToken(user);
+        var photos = user.Photos.FirstOrDefault(a => a.IsMain);
+        return new GetUserLoginDTO()
+        {
+            token = token,
+            username = user.UserName,
+            url = photos != null ? photos!.Url : _conf["NoPhoto"]
+        };
     }
 
     public async Task<GetUserLoginDTO?> RegisterAsync(RegisterDTO registerUser)
     {
         if (await UserExist(registerUser.username)) return null;
-                 AppUser user =_mapper.Map<AppUser>(registerUser);
-                 using (var hmac = new HMACSHA256())
-                 {
-                         user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerUser.password));
-                         user.PasswordSalt = hmac.Key;
+        AppUser user = _mapper.Map<AppUser>(registerUser);
+        using (var hmac = new HMACSHA256())
+        {
+            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerUser.password));
+            user.PasswordSalt = hmac.Key;
 
-                 }
-                 await _db.Users.AddAsync(user);
-                 await _db.SaveChangesAsync();
-                 var token = CreateToken(user);
-                 return new GetUserLoginDTO(){token=token,username=user.UserName,url=user.Photos.FirstOrDefault(a=>a.IsMain)!.Url};
+        }
+        await _db.Users.AddAsync(user);
+        await _db.SaveChangesAsync();
+        var token = CreateToken(user);
+        var photos = user.Photos.FirstOrDefault(a => a.IsMain);
+
+        return new GetUserLoginDTO()
+        {
+            token = token,
+            username = user.UserName,
+            url = photos != null ? photos!.Url : _conf["NoPhoto"]
+        };
     }
     private string CreateToken(AppUser user)
     {
         var tokenKey = _conf["TokenKey"] ?? throw new Exception("TokenKey not found");
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
         var claims = new List<Claim>
-            {   
+            {
                 new Claim(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.UtcNow).ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
                 new(ClaimTypes.NameIdentifier,user.UserName)
             };
