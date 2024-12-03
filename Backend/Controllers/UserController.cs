@@ -3,6 +3,7 @@ using AutoMapper;
 using Backend.Data;
 using Backend.DTOs;
 using Backend.Extensions;
+using Backend.Helpers;
 using Backend.Models;
 using Backend.Services.PhotoService;
 using Backend.Services.UsersService;
@@ -23,10 +24,10 @@ namespace Backend.Controllers
         private readonly IUsersService userRepository = userRepository;
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
-            var users = await userRepository.GetMembersAsync();
-
+            var users = await userRepository.GetMembersAsync(userParams);
+            Response.AddPaginationHeader(users);
             return Ok(users);
         }
 

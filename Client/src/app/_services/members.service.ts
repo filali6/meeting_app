@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Member } from '../_models/Member';
@@ -6,6 +6,7 @@ import { AccountsService } from './accounts.service';
 import { asyncScheduler, of, scheduled } from 'rxjs';
 import { Photo } from '../_models/Photo';
 import { User } from '../_models/User';
+import { PaginationResults } from '../_models/Pagination';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +17,22 @@ export class MembersService {
   baseUrl = environment.apiUrl;
   private accountService = inject(AccountsService);
   members = signal<Member[]>([])
-  getMembers() {
-    if (this.members().length <= 0)
-      this.http.get<Member[]>(this.baseUrl + "User")
+  PaginatedRes = signal<PaginationResults<Member[]>|null>(null);
+  getMembers(pageNumber?:number,pageSize ?: number) {
+    let params = new HttpParams();
+      if(pageNumber && pageSize){
+        params=params.append("pageNumber",pageNumber);
+        params=params.append("PageSize",pageSize);
+      }
+      
+      return this.http.get<Member[]>(this.baseUrl + "User",{observe :'response',params : params})
         .subscribe({
-          next: response => this.members.set(response)
+          next: response => {
+            this.PaginatedRes.set({
+              items:response.body as Member[],
+              Pagination:JSON.parse(response.headers.get("Pagination")!) 
+            })
+          }
         });
 
   }

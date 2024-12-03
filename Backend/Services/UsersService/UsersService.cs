@@ -3,6 +3,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Backend.Data;
 using Backend.DTOs;
+using Backend.Helpers;
 using Backend.Models;
 using Backend.Services.PhotoService;
 using Microsoft.EntityFrameworkCore;
@@ -24,11 +25,11 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
             .SingleOrDefaultAsync();
         return m;
     }
-    public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+    public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
     {
-        return await context.Users
-            .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
-            .ToListAsync();
+        var query =  context.Users
+            .ProjectTo<MemberDto>(mapper.ConfigurationProvider);
+         return   await PagedList<MemberDto>.CreatAsync(query,userParams.pageNumber,userParams.PageSize);
     }
     public async Task<AppUser?> GetUserByIdAsync(int id)
     {

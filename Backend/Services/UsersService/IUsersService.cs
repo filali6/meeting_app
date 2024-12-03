@@ -1,5 +1,6 @@
 using System;
 using Backend.DTOs;
+using Backend.Helpers;
 using Backend.Models;
 
 namespace Backend.Services.UsersService;
@@ -11,7 +12,7 @@ public interface IUsersService
     Task<IEnumerable<AppUser>> GetUsersAsync();
     Task<AppUser?> GetUserByIdAsync(int id);
     Task<AppUser?> GetUserByUsernameAsync(string username);
-    Task<IEnumerable<MemberDto>> GetMembersAsync();
+    Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams);
    Task<MemberDto?> GetMemberAsync(string username);
    Task UpdateMember(string username,EditMemberDTO member);
    Task toMainPhoto(string username, int photoId);

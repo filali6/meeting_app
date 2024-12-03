@@ -3,10 +3,19 @@
     <div class="container">
     <div class="row">
         
-        @for (member of membersService.members(); track $index) {
+        @for (member of membersService.PaginatedRes()?.items; track $index) {
             <div class="Mycard col-3" style="padding: 1rem;">
         <app-member-card [member]="member"></app-member-card>
     </div>
     }
     </div>
+    @if (membersService.PaginatedRes()) {
+        <div class="d-flex justify-content-center">
+            <pagination [totalItems]="membersService.PaginatedRes()?.Pagination?.totalItems!"
+            [itemsPerPage]="pageSize"
+            [maxSize]="10"
+
+            (pageChanged)="pageChanged($event) "></pagination>
+        </div>
+    }
 </div>
