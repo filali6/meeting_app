@@ -7,6 +7,7 @@ import { asyncScheduler, of, scheduled } from 'rxjs';
 import { Photo } from '../_models/Photo';
 import { User } from '../_models/User';
 import { PaginationResults } from '../_models/Pagination';
+import { UserParams } from '../_models/UserParams';
 
 @Injectable({
   providedIn: 'root'
@@ -18,13 +19,9 @@ export class MembersService {
   private accountService = inject(AccountsService);
   members = signal<Member[]>([])
   PaginatedRes = signal<PaginationResults<Member[]>|null>(null);
-  getMembers(pageNumber?:number,pageSize ?: number) {
-    let params = new HttpParams();
-      if(pageNumber && pageSize){
-        params=params.append("pageNumber",pageNumber);
-        params=params.append("PageSize",pageSize);
-      }
-      
+  getMembers(UserParams : UserParams) {
+    
+      const params = this.getParams(UserParams);
       return this.http.get<Member[]>(this.baseUrl + "User",{observe :'response',params : params})
         .subscribe({
           next: response => {
@@ -99,5 +96,18 @@ export class MembersService {
     });
     console.log
 }
-
+private getParams(userparams:UserParams):HttpParams{
+  let params = new HttpParams();
+      if(userparams.pageNumber && userparams.pageSize){
+        params=params.append("pageNumber",userparams.pageNumber);
+        params=params.append("PageSize",userparams.pageSize);
+      }
+      if(userparams.gender)
+        params=params.append("gender",userparams.gender);
+      if(userparams.minAge)
+        params=params.append("gender",userparams.minAge);
+      if(userparams.maxAge)
+        params=params.append("gender",userparams.maxAge);
+      return params;
+}
 }

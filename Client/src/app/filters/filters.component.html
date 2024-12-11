@@ -1,0 +1,29 @@
+<div class="container pt-5">
+
+    <form [formGroup]="filterForm"  (submit)="filtrer()" class="d-flex align-items-center">
+        <div class="row">
+            <div class="mb-4 col-2"><label for="">page size</label>
+                <select class="form-select mb-4" aria-label=".form-select-lg example" formControlName="pageSize">
+                    <option value="4" selected>4</option>
+                    <option value="8">8</option>
+                    <option value="12">12</option>
+                </select>
+            </div>
+            <div class=" mb-4 col-2"><label for="">gender</label>
+                <select class="form-select" aria-label=".form-select-lg example" formControlName="gender">
+                    <option value="Male" selected>male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="mb-4 col-2">
+                <label for="">max age</label>
+                <input type="number" class="form-control" [defaultValue]="80" formControlName="maxAge">
+            </div>
+            <div class="mb-4 col-2">
+                <label for="">min age</label>
+                <input type="number" class="form-control" [defaultValue]="18" formControlName="minAge">
+            </div>
+            <div class="mb-4 col-2"><button type="submit" class="form-control "> filtrer</button></div>
+        </div>
+    </form>
+</div>

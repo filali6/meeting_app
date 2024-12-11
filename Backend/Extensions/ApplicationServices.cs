@@ -24,6 +24,7 @@ public static class ApplicationServices
         collection.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         collection.Configure<CloudinarySettings>(conf.GetSection("CloudinarySettings"));
         collection.AddScoped<IPhotoService,PhotoService>();
+        collection.AddScoped<LastActive>();
         return collection;
     }
 }

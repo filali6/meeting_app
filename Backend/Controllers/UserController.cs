@@ -26,6 +26,8 @@ namespace Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
+            var u=await User.getUserToken(userRepository);
+            userParams.CurrentUser=u?.UserName;
             var users = await userRepository.GetMembersAsync(userParams);
             Response.AddPaginationHeader(users);
             return Ok(users);
@@ -44,7 +46,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> UpdateUser(EditMemberDTO member)
         {
             
-            string? username=User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string? username=User.FindFirstValue(ClaimTypes.Name);
             if(username == null)return Unauthorized("login to update your profile");
             await userRepository.UpdateMember(username,member);
             return NoContent();
@@ -68,7 +70,7 @@ namespace Backend.Controllers
         [HttpPut("{idPhoto}")]
         public async Task<ActionResult> toMain(int idPhoto)
         {
-           string? username=User.FindFirstValue(ClaimTypes.NameIdentifier);
+           string? username=User.FindFirstValue(ClaimTypes.Name);
             if(username == null)return Unauthorized("login to update your profile");
             await userRepository.toMainPhoto(username,idPhoto);
             return NoContent(); 
@@ -76,7 +78,7 @@ namespace Backend.Controllers
         [HttpDelete("{idPhoto}")]
         public async Task<ActionResult> DeletePhoto(int idPhoto)
         {
-           string? username=User.FindFirstValue(ClaimTypes.NameIdentifier);
+           string? username=User.FindFirstValue(ClaimTypes.Name);
             if(username == null)return Unauthorized("login to update your profile");
             await userRepository.DeletePhoto(username,idPhoto);
             return Ok(); 

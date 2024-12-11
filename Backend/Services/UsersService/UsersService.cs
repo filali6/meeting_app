@@ -11,15 +11,16 @@ using SQLitePCL;
 
 namespace Backend.Services.UsersService;
 
-public class UsersService(DataContext context, IMapper mapper, IPhotoService photoService) : IUsersService
+public class UsersService(DataContext context, IMapper mapper, IPhotoService photoService , ILogger<IUsersService> logger) : IUsersService
 {
     private readonly IPhotoService photoService = photoService;
     private readonly DataContext context = context;
     private readonly IMapper mapper = mapper;
+    private readonly ILogger<IUsersService> _logger=logger;
 
     public async Task<MemberDto?> GetMemberAsync(string username)
     {
-        var m=await context.Users
+        var m = await context.Users
             .Where(x => x.UserName.ToLower() == username.ToLower())
             .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
             .SingleOrDefaultAsync();
@@ -27,9 +28,17 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
     }
     public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
     {
-        var query =  context.Users
-            .ProjectTo<MemberDto>(mapper.ConfigurationProvider);
-         return   await PagedList<MemberDto>.CreatAsync(query,userParams.pageNumber,userParams.PageSize);
+        var query = context.Users.AsQueryable();
+        query = query.Where(x => x.UserName != userParams.CurrentUser);
+        _logger.LogInformation(userParams.Gender);
+        if ( userParams.Gender=="Male" || userParams.Gender=="Female")
+         query = userParams.Gender == "Male" ? query.Where(u => u.IsMale) : query.Where(u => !u.IsMale);
+         //var minDob=DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MinAge-1));
+        //var maxDob=DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MaxAge-1));
+
+        //query=query.Where(u=>u.DateBirth>=minDob && u.DateBirth<=maxDob);
+        return await PagedList<MemberDto>.CreatAsync(query.ProjectTo<MemberDto>(mapper.ConfigurationProvider)
+           , userParams.pageNumber, userParams.PageSize);
     }
     public async Task<AppUser?> GetUserByIdAsync(int id)
     {

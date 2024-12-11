@@ -72,7 +72,8 @@ public class AccountService(DataContext db, IConfiguration conf, IMapper mapper)
         var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(DateTime.UtcNow).ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64),
-                new(ClaimTypes.NameIdentifier,user.UserName)
+                new(ClaimTypes.NameIdentifier,user.Id.ToString()),
+                new(ClaimTypes.Name,user.UserName)
             };
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
         var tokenDescriptor = new SecurityTokenDescriptor
