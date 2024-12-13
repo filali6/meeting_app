@@ -8,11 +8,10 @@ import { DecimalPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { MembersService } from '../../_services/members.service';
 
 @Component({
-  selector: 'app-add-photo',
-  standalone: true,
-  imports: [NgClass,NgFor,NgIf,NgStyle,FileUploadModule,DecimalPipe],
-  templateUrl: './add-photo.component.html',
-  styleUrl: './add-photo.component.css'
+    selector: 'app-add-photo',
+    imports: [NgClass, NgFor, NgIf, NgStyle, FileUploadModule, DecimalPipe],
+    templateUrl: './add-photo.component.html',
+    styleUrl: './add-photo.component.css'
 })
 export class AddPhotoComponent implements OnInit{
   member=input.required<Member>();

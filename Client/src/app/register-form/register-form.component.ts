@@ -7,11 +7,10 @@ import { TextInputComponent } from "../_forms/text-input/text-input.component";
 import { DatepickerComponent } from "../_forms/datepicker/datepicker.component";
 import { UserRegister } from '../_models/UserRegister';
 @Component({
-  selector: 'app-register-form',
-  standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe, TextInputComponent, DatepickerComponent],
-  templateUrl: './register-form.component.html',
-  styleUrl: './register-form.component.css'
+    selector: 'app-register-form',
+    imports: [ReactiveFormsModule, JsonPipe, TextInputComponent, DatepickerComponent],
+    templateUrl: './register-form.component.html',
+    styleUrl: './register-form.component.css'
 })
 export class RegisterFormComponent implements OnInit{
 

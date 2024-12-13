@@ -4,11 +4,10 @@ import { UsersService } from '../_services/users.service';
 import { AccountsService } from '../_services/accounts.service';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [RegisterFormComponent],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+    selector: 'app-home',
+    imports: [RegisterFormComponent],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.css'
 })
 export class HomeComponent {
 

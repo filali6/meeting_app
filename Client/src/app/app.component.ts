@@ -9,11 +9,11 @@ import { HomeComponent } from "./home/home.component";
 import { NgxSpinnerModule } from 'ngx-spinner';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet,NavComponent,NgxSpinnerModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  standalone:true,
+    selector: 'app-root',
+    imports: [RouterOutlet, NavComponent, NgxSpinnerModule],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit  {
   private UserServices =inject(UsersService);
@@ -28,6 +28,6 @@ export class AppComponent implements OnInit  {
   setCurrentUser(){
     var user=localStorage.getItem("user");
     if(!user) return
-    this.accountService.currentUser.set(JSON.parse(user));
+    this.accountService.setCurrentUser(JSON.parse(user));
   }
 }

@@ -5,12 +5,13 @@ import { map } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { UserRegister } from '../_models/UserRegister';
+import { LikesService } from './likes.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountsService {
-
+  private likeService = inject(LikesService);//carefull from circular dependancy when inject service into service
   http = inject(HttpClient);
   BaseUrl = environment.apiUrl+"account/";
   currentUser = signal<User | null>(null);
@@ -19,8 +20,7 @@ export class AccountsService {
     return this.http.post<User>(this.BaseUrl + "login", model).pipe(
       map(user => {
         if (user) {
-          localStorage.setItem("user", JSON.stringify(user));
-          this.currentUser.set(user);
+          this.setCurrentUser(user);
           this.router.navigateByUrl('members')
         }
       })
@@ -35,10 +35,15 @@ export class AccountsService {
 
     return this.http.post<User>(this.BaseUrl + "register", model).pipe(
       map(user => {
-        localStorage.setItem("user", JSON.stringify(user));
-        this.currentUser.set(user);
+        this.setCurrentUser(user);
         return user
       })
     );
+  }
+  setCurrentUser(user:User)
+  {
+    localStorage.setItem("user", JSON.stringify(user));
+    this.currentUser.set(user);
+    this.likeService.getLikeIds();
   }
 }

@@ -3,11 +3,10 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserParams } from '../_models/UserParams';
 
 @Component({
-  selector: 'app-filters',
-  standalone: true,
-  imports: [ReactiveFormsModule],
-  templateUrl: './filters.component.html',
-  styleUrl: './filters.component.css'
+    selector: 'app-filters',
+    imports: [ReactiveFormsModule],
+    templateUrl: './filters.component.html',
+    styleUrl: './filters.component.css'
 })
 export class FiltersComponent implements OnInit {
 

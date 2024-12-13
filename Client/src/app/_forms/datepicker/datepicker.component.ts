@@ -4,11 +4,10 @@ import { FormControl, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @Component({
-  selector: 'app-datepicker',
-  standalone: true,
-  imports: [BsDatepickerModule,ReactiveFormsModule,NgIf],
-  templateUrl: './datepicker.component.html',
-  styleUrl: './datepicker.component.css'
+    selector: 'app-datepicker',
+    imports: [BsDatepickerModule, ReactiveFormsModule, NgIf],
+    templateUrl: './datepicker.component.html',
+    styleUrl: './datepicker.component.css'
 })
 export class DatepickerComponent {
   label = input<string>('');

@@ -1,1 +1,35 @@
-<p>lists works!</p>
+
+<div class="text-center mt-4">
+    <h2>{{getTitle()}}</h2>
+</div>
+<div class="container ">
+    <div class="d-flex">
+        <div class="btn-group">
+            <button class="btn btn-primary" btnRadio="like" [(ngModel)]="predicate" (click)="loadLikes()">Members I
+                like</button>
+            <button class="btn btn-primary" btnRadio="likedBy" [(ngModel)]="predicate" (click)="loadLikes()">Members who
+                like me</button>
+            <button class="btn btn-primary" btnRadio="mutual" [(ngModel)]="predicate" (click)="loadLikes()">mutuel
+                liking</button>
+        </div>
+    </div>
+    <div class="row">
+        @for (member of likeService.paginatedRes()?.items; track member.id) {
+        
+            <div class="Mycard col-3" style="padding: 1rem;">
+                <app-member-card [member]="member"></app-member-card>
+            </div>
+        
+        }
+    </div>
+    @if (likeService.paginatedRes()) {
+        <div class="d-flex justify-content-center">
+            <pagination 
+            [ngModel]="likeService.paginatedRes()?.Pagination?.currentPage"
+            [totalItems]="likeService.paginatedRes()?.Pagination?.totalItems!"
+            [itemsPerPage]="this.likeService.paginatedRes()?.Pagination?.itemsPerPage!" 
+            [maxSize]="10" 
+            (pageChanged)="pageChanged($event) "></pagination>
+        </div>
+        }
+</div>

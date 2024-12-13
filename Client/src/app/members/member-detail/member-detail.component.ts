@@ -3,13 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 import { MembersService } from '../../_services/members.service';
 import { Member } from '../../_models/Member';
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
+import { TimeagoModule, TimeagoPipe } from 'ngx-timeago';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-member-detail',
-  standalone: true,
-  imports: [GalleryModule],
-  templateUrl: './member-detail.component.html',
-  styleUrl: './member-detail.component.css'
+    selector: 'app-member-detail',
+    imports: [GalleryModule,TimeagoModule,DatePipe],
+    templateUrl: './member-detail.component.html',
+    styleUrl: './member-detail.component.css'
 })
 export class MemberDetailComponent implements OnInit {
   member? :Member ;

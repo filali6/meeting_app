@@ -10,8 +10,12 @@
     </div>
     @if (membersService.PaginatedRes()) {
     <div class="d-flex justify-content-center">
-        <pagination [totalItems]="membersService.PaginatedRes()?.Pagination?.totalItems!"
-            [itemsPerPage]="this.userParams.pageSize" [maxSize]="10" (pageChanged)="pageChanged($event) "></pagination>
+        <pagination 
+        [ngModel]="membersService.PaginatedRes()?.Pagination?.currentPage"
+        [totalItems]="membersService.PaginatedRes()?.Pagination?.totalItems!"
+        [itemsPerPage]="this.userParams.pageSize" 
+        [maxSize]="10" 
+        (pageChanged)="pageChanged($event) "></pagination>
     </div>
     }
 </div>

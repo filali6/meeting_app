@@ -48,8 +48,9 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
     {
         var user = await context.Users
             .Include(x => x.Photos)
+            .Include(x=>x.Likes)
             .SingleOrDefaultAsync(x => x.UserName == username);
-        if (user == null) throw new Exception("user not found");
+        if (user == null) throw new Exception("user "+username+" not found");
         return user;
     }
     public async Task<IEnumerable<AppUser>> GetUsersAsync()

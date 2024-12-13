@@ -7,11 +7,10 @@ import { Toast, ToastrService } from 'ngx-toastr';
 import { AddPhotoComponent } from "../add-photo/add-photo.component";
 import { TabsModule } from 'ngx-bootstrap/tabs';
 @Component({
-  selector: 'app-member-edit',
-  standalone: true,
-  imports: [FormsModule, AddPhotoComponent ,TabsModule],
-  templateUrl: './member-edit.component.html',
-  styleUrl: './member-edit.component.css'
+    selector: 'app-member-edit',
+    imports: [FormsModule, AddPhotoComponent, TabsModule],
+    templateUrl: './member-edit.component.html',
+    styleUrl: './member-edit.component.css'
 })
 export class MemberEditComponent implements OnInit {
   @ViewChild('editForm') form?: NgForm;
@@ -26,7 +25,7 @@ export class MemberEditComponent implements OnInit {
     const username = this.accountSevice.currentUser()?.username;
     if (username) {
       this.membberService.getMember(username).subscribe({
-        next: response => this.member = response
+        next: response => this.member = response as Member
       })
     }
   }

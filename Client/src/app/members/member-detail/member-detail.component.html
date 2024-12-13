@@ -12,7 +12,8 @@
                         <h4 class="mt-0 mb-0">{{member.knownAs}}</h4>
                         <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>{{member.city}}</p>
                         <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>{{member.age}} Y/O</p>
-                        <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>last active: {{member.lastActive}}</p>
+                        <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>member since: {{member.created | date : 'dd MMM yyyy'}}</p>
+                        <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>LAST active: {{member.lastActive | date}}</p>
                     </div>
                 </div>
             </div>

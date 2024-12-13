@@ -1,17 +1,17 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, NgModule, OnInit } from '@angular/core';
 import { MembersService } from '../../_services/members.service';
 import { Member } from '../../_models/Member';
 import { MemberCardComponent } from "../member-card/member-card.component";
 import { PaginationModule,PaginationComponent} from 'ngx-bootstrap/pagination';
 import { UserParams } from '../../_models/UserParams';
 import { FiltersComponent } from "../../filters/filters.component";
+import { FormsModule, NgModel } from '@angular/forms';
 
 @Component({
-  selector: 'app-member-list',
-  standalone: true,
-  imports: [MemberCardComponent, PaginationModule, FiltersComponent],
-  templateUrl: './member-list.component.html',
-  styleUrl: './member-list.component.css'
+    selector: 'app-member-list',
+    imports: [MemberCardComponent, PaginationModule, FiltersComponent,FormsModule],
+    templateUrl: './member-list.component.html',
+    styleUrl: './member-list.component.css'
 })
 export class MemberListComponent implements OnInit {
 
