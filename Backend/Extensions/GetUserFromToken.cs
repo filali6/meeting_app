@@ -17,4 +17,13 @@ public static class GetUserFromToken
         if(id == null) throw new Exception("log in first");
         else return  await userRepository.GetUserByIdAsync(int.Parse(id));
     }
+    public static string? getUsernameFromToken(this ClaimsPrincipal User ){
+        return User.FindFirstValue(ClaimTypes.Name);
+    }
+        public static int? getUserIdFromToken(this ClaimsPrincipal User ){
+        var userId =    User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if(userId==null) throw new Exception("problem with token");
+        return int.Parse(userId);
+    }
+    
 }

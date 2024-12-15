@@ -1,0 +1,33 @@
+<div class="card-body msg_card_body">
+    @for (message of messages(); track message.id) {
+        @if(message.sourceUsername===username()){
+            <div class="d-flex justify-content-start mb-4">
+                <div class="img_cont_msg">
+                    <img [src]="message.sourcePhotoUrl" class="rounded-circle user_img_msg">
+                </div>
+                <div class="msg_cotainer">
+                    {{message.content}}
+                    <span class="msg_time">{{message.sentDate|date:"dd-MM-yyyy HH:mm"}}</span>
+                </div>
+            </div>
+        }
+        @else {
+            <div class="d-flex justify-content-end mb-4">
+                <div class="msg_cotainer_send">
+                    {{message.content}}
+                    <span class="msg_time_send">{{message.sentDate|date:"dd-MM-yyyy HH:mm"}}</span>
+                </div>
+                <div class="img_cont_msg">
+                    <img [src]="message.sourcePhotoUrl" class="rounded-circle user_img_msg">
+                </div>
+            </div>
+        }
+    }
+
+    <div class="card-footer">
+        <div class="input-group">
+            <textarea name="" class="form-control type_msg" [(ngModel)]="messageToSend" placeholder="Type your message..."></textarea>
+                <span class="input-group-text send_btn" (click)="sendMessage()"><i class="fa fa-plane"></i></span>
+            </div>
+        </div>
+    </div>

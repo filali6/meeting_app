@@ -16,11 +16,11 @@ namespace Backend.Controllers
 {
 
 [Authorize]
-    public class UserController(ILogger<WeatherForecastController> logger, IUsersService userRepository,IPhotoService  photo,IMapper mapper) : BaseApiController
+    public class UserController(ILogger<UserController> logger, IUsersService userRepository,IPhotoService  photo,IMapper mapper) : BaseApiController
     {
         private readonly IMapper mapper=mapper;
         private readonly IPhotoService  _photo = photo;
-        private readonly ILogger<WeatherForecastController> _logger = logger;
+        private readonly ILogger<UserController> _logger = logger;
         private readonly IUsersService userRepository = userRepository;
 
         [HttpGet]

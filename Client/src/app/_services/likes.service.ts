@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Member } from '../_models/Member';
 import { PaginationResults } from '../_models/Pagination';
+import { getParams } from './paginationHelper';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,11 +16,8 @@ export class LikesService {
     return this.http.post(this.baseUrl+"/"+targetId,{});
   }
   getLikes(predicate:string,pageNumber:number,pageSize:number){
-      let params = new HttpParams();
+      let params = getParams(pageNumber,pageSize);
       params = params.append("predicate",predicate);
-      params = params.append("pageNumber", pageNumber);
-      params = params.append("PageSize", pageSize);
-        
     return this.http.get<Member[]>(this.baseUrl,{
       observe:"response",
       params:params

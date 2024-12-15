@@ -9,6 +9,7 @@ import { ServerErrorComponent } from './_errors/server-error/server-error.compon
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { editGuardGuard } from './_guards/edit-guard.guard';
+import { memberDetailResolver } from './_resolvers/member-detail.resolver';
 
 export const routes: Routes = [
     {path : "",component:HomeComponent},
@@ -18,7 +19,7 @@ export const routes: Routes = [
         children : [
             {path : "lists",component:ListsComponent},
             {path : "members",component:MemberListComponent},
-            {path : "member/:username",component:MemberDetailComponent},
+            {path : "member/:username",component:MemberDetailComponent ,resolve:[memberDetailResolver]},
             {path : "edit",component:MemberEditComponent,canDeactivate :[editGuardGuard]},
             {path : "messages",component:MessagesComponent},
             

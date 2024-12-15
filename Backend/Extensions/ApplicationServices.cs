@@ -3,6 +3,7 @@ using Backend.Data;
 using Backend.Helpers;
 using Backend.Services.AccountService;
 using Backend.Services.LikesService;
+using Backend.Services.MessageService;
 using Backend.Services.PhotoService;
 using Backend.Services.UsersService;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ public static class ApplicationServices
         collection.Configure<CloudinarySettings>(conf.GetSection("CloudinarySettings"));
         collection.AddScoped<IPhotoService,PhotoService>();
         collection.AddScoped<ILikesService,LikesService>();
+        collection.AddScoped<IMessageService,MessageService>();
         collection.AddScoped<LastActive>();
         return collection;
     }
