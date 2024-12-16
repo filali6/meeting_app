@@ -21,7 +21,7 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
     public async Task<MemberDto?> GetMemberAsync(string username)
     {
         var m = await context.Users
-            .Where(x => x.UserName.ToLower() == username.ToLower())
+            .Where(x => x.NormalizedUserName == username.ToUpper())
             .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
             .SingleOrDefaultAsync();
         return m;

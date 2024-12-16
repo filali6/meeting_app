@@ -22,7 +22,7 @@ public class MessageController(IMessageService messageService,IUsersService user
         if(username.ToLower() == messagecreate.TargetUsername.ToLower())return BadRequest("do not message yourself");
         var sender =await userService.GetUserByUsernameAsync(username);
         var receiver =  await userService.GetUserByUsernameAsync(messagecreate.TargetUsername);
-        if(sender == null || receiver==null)return BadRequest("can not send message");
+        if(sender == null || receiver==null || sender.UserName==null || receiver.UserName==null)return BadRequest("can not send message");
         Message newMessage = new()
         {
             SourceUser=sender,

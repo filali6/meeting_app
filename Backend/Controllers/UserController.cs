@@ -23,6 +23,7 @@ namespace Backend.Controllers
         private readonly ILogger<UserController> _logger = logger;
         private readonly IUsersService userRepository = userRepository;
 
+        [Authorize(Roles ="member")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
@@ -33,6 +34,7 @@ namespace Backend.Controllers
             return Ok(users);
         }
 
+        [Authorize( Roles ="admin")]
         [HttpGet("{username}")]  
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {

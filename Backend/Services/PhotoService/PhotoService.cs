@@ -15,7 +15,7 @@ public class PhotoService : IPhotoService
         _cloud=new Cloudinary(acc);
     }
 
-    public async Task<PhotoDTO> AddPhotoAsync(IFormFile file, string username)
+    public  Task<PhotoDTO> AddPhotoAsync(IFormFile file, string username)
     {
         throw new NotImplementedException();
     }
