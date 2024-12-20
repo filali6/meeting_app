@@ -12,13 +12,16 @@ public static class IdentityServices
 {
     public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration conf)
     {
-        services.AddIdentityCore<AppUser>(opt=>{
-            opt.Password.RequireNonAlphanumeric=false;
+        services.AddIdentityCore<AppUser>(opt =>
+        {
+            opt.Password.RequireNonAlphanumeric = false;
 
         })
-        .AddRoles<AppRole>()
-        .AddRoleManager<RoleManager<AppRole>>()
+        .AddRoles<IdentityRole>()
+        .AddRoleManager<RoleManager<IdentityRole>>()
         .AddEntityFrameworkStores<DataContext>();
+
+
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(option =>
     {
@@ -31,9 +34,9 @@ public static class IdentityServices
             ValidateAudience = false
         };
     });
-    services.AddAuthorizationBuilder()
-    .AddPolicy("RequireAdminRole",policy=>policy.RequireRole("admin"))
-    .AddPolicy("ModratePhotoRole",policy=>policy.RequireRole("admine","moderator"));
+        services.AddAuthorizationBuilder()
+                .AddPolicy(Policies.RequireAdminRole, policy => policy.RequireRole(Roles.Admin))
+                .AddPolicy(Policies.ModeratePhotoRole, policy => policy.RequireRole(Roles.Admin, Roles.Moderator));
         return services;
     }
 }

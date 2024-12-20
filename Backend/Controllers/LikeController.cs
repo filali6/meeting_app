@@ -23,8 +23,8 @@ namespace Backend.Controllers
         private readonly ILikesService _likesService = likesService;
         private readonly IUsersService _userService = userService;
 
-        [HttpPost("{targetId:int}")]
-        public async Task<ActionResult> ToggleLike(int targetId)
+        [HttpPost("{targetId}")]
+        public async Task<ActionResult> ToggleLike(string targetId)
         {
             var user = await User.getUserFromIdToken(_userService);
             if (user == null) return Unauthorized("log in please");
@@ -49,7 +49,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet("list")]
-        public async Task<ActionResult<IEnumerable<int>>> GetCurrentUserLikeIds(){
+        public async Task<ActionResult<IEnumerable<string>>> GetCurrentUserLikeIds(){
             var user = await User.getUserFromIdToken(_userService);
             return Ok(await _likesService.GetCurrentUserLikeIds(user!.Id));
         }

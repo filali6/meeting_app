@@ -14,7 +14,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Controllers
 {
-
 [Authorize]
     public class UserController(ILogger<UserController> logger, IUsersService userRepository,IPhotoService  photo,IMapper mapper) : BaseApiController
     {
@@ -35,6 +34,8 @@ namespace Backend.Controllers
         }
 
         [Authorize( Roles ="admin")]
+
+        
         [HttpGet("{username}")]  
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
@@ -61,7 +62,8 @@ namespace Backend.Controllers
             var user=await User.getUserToken(userRepository);
             var result = await _photo.PhotoUploadAsync(file);
             if(result.Error!=null) return BadRequest(result.Error.Message);
-            Photo photo= new Photo{
+            Photo photo= new()
+            {
                 Url = result.SecureUrl.AbsoluteUri,
                 PublicId=result.PublicId
             };

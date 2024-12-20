@@ -7,5 +7,5 @@ public class GetUsersDTO
 {
 
     public required string username { get; set; }
-    public required int id { get; set; }
+    public required string id { get; set; }
 }

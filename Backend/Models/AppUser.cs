@@ -3,7 +3,7 @@ using Backend.Extensions;
 using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Models;
-public class AppUser:IdentityUser<int>
+public class AppUser:IdentityUser
 {
     public DateOnly DateBirth { get; set; }
     public required string KnownAs {get;set;}="tunisia";

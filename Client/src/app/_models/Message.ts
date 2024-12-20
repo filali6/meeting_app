@@ -2,10 +2,10 @@ export interface Message {
     id: number
     sourcePhotoUrl: string
     sourceUsername: string
-    sourceUserId: number
+    sourceUserId: string
     targetPhotoUrl: string
     targetUsername: string
-    targetUserId: number
+    targetUserId: string
     content: string
     readDate?: Date
     sentDate: Date

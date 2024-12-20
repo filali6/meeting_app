@@ -1,14 +1,11 @@
 using System;
 using Backend.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Data;
 
-public class DataContext(DbContextOptions options) :
-IdentityDbContext<AppUser, AppRole, int, IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>
-, IdentityRoleClaim<int>, IdentityUserToken<int>>(options)
+public class DataContext(DbContextOptions options) : IdentityDbContext(options) 
 {
     public DbSet<Photo> Photos { get; set; }
     public DbSet<UserLike> Likes { get; set; }

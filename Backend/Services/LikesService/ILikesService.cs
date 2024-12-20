@@ -7,9 +7,9 @@ namespace Backend.Services.LikesService;
 
 public interface ILikesService
 {
-    Task<UserLike?> GetUserLike(int sourceUser,int TargetUser);
+    Task<UserLike?> GetUserLike(string sourceUser,string TargetUser);
     Task<PagedList<MemberDto>> GetUserLikes(LikesParams likesParams);
-    Task<IEnumerable<int>> GetCurrentUserLikeIds(int userId);
+    Task<IEnumerable<string>> GetCurrentUserLikeIds(string userId);
     void DeleteLike(UserLike like);
     void AddLike(UserLike like);
     Task<bool> saveChangeAsync();

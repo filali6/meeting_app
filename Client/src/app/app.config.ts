@@ -9,6 +9,7 @@ import { errorInterceptor } from './_interceptors/error.interceptor';
 import { addTokenInterceptor } from './_interceptors/add-token.interceptor';
 import { spinnerInterceptor } from './_interceptors/spinner.interceptor';
 import { TimeagoFormatter, TimeagoModule } from 'ngx-timeago';
+import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,6 +18,6 @@ export const appConfig: ApplicationConfig = {
      provideHttpClient(withInterceptors([addTokenInterceptor,errorInterceptor,spinnerInterceptor])),
      provideAnimations(),
      provideToastr({positionClass:"toast-bottom-right"}),
-     importProvidersFrom(NgxSpinnerModule,TimeagoModule)
+     importProvidersFrom(NgxSpinnerModule,TimeagoModule.forRoot(),ModalModule.forRoot()),
     ]
 };

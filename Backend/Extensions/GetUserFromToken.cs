@@ -15,15 +15,15 @@ public static class GetUserFromToken
     public async static Task<AppUser?> getUserFromIdToken(this ClaimsPrincipal User,IUsersService userRepository ){
         string? id=User.FindFirstValue(ClaimTypes.NameIdentifier);
         if(id == null) throw new Exception("log in first");
-        else return  await userRepository.GetUserByIdAsync(int.Parse(id));
+        else return  await userRepository.GetUserByIdAsync(id);
     }
     public static string? getUsernameFromToken(this ClaimsPrincipal User ){
         return User.FindFirstValue(ClaimTypes.Name);
     }
-        public static int? getUserIdFromToken(this ClaimsPrincipal User ){
+        public static string? getUserIdFromToken(this ClaimsPrincipal User ){
         var userId =    User.FindFirstValue(ClaimTypes.NameIdentifier);
         if(userId==null) throw new Exception("problem with token");
-        return int.Parse(userId);
+        return userId;
     }
     
 }

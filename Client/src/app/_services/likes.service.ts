@@ -10,9 +10,9 @@ import { getParams } from './paginationHelper';
 export class LikesService {
   baseUrl=environment.apiUrl+'like';
   private http=inject(HttpClient);
-  likeIds = signal<number[]>([]);
+  likeIds = signal<string[]>([]);
   paginatedRes=signal<PaginationResults<Member[]>|null>(null);
-  toggleLike(targetId:number){
+  toggleLike(targetId:string){
     return this.http.post(this.baseUrl+"/"+targetId,{});
   }
   getLikes(predicate:string,pageNumber:number,pageSize:number){
@@ -31,7 +31,7 @@ export class LikesService {
     });
   }
   getLikeIds(){
-    return this.http.get<number[]>(this.baseUrl+"/list").subscribe({
+    return this.http.get<string[]>(this.baseUrl+"/list").subscribe({
       next: ids=>this.likeIds.set(ids)
     });
   }
