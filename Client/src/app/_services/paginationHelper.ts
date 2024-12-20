@@ -18,4 +18,9 @@ export function setPaginatedResp<T>(response: HttpResponse<T>, paginatedResultSi
         Pagination: JSON.parse(response.headers.get("Pagination")!)
     })
   }
-
+export  function parseJwt (token:string) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(escape(atob(base64)));
+    return JSON.parse(jsonPayload)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+};

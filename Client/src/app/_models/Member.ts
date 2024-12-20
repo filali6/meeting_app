@@ -1,6 +1,6 @@
 import {Photo} from"./Photo";
 export interface Member{
-    id: number;
+    id: string;
     userName?: string | null;
     age: number;
     photoUrl?: string | null;

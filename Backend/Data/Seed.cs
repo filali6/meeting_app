@@ -3,15 +3,20 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Backend.Models;
+using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Data;
 
 public class Seed
 {
-    public static async Task SeedUsers(DataContext context)
+    public static async Task SeedUsers(UserManager<AppUser> userManager,RoleManager<IdentityRole> roleManager)
     {
-        if (await context.Users.AnyAsync()) return;
+        if (await userManager.Users.AnyAsync()) return;
+        await roleManager.CreateAsync(new IdentityRole(Roles.Member) );
+        await roleManager.CreateAsync(new IdentityRole(Roles.Admin) );
+        await roleManager.CreateAsync(new IdentityRole(Roles.Moderator) );
         var userData = await File.ReadAllTextAsync("Data/UsersSeed.json");
         var users = JsonSerializer.Deserialize<List<AppUser>>(userData,
             new JsonSerializerOptions
@@ -22,17 +27,19 @@ public class Seed
         {
             users.ForEach(async u =>
             {
-                using (var hmac = new HMACSHA256())
-                {
-                    
-                    
-                    u.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("PassWord"));
-                    u.PasswordSalt = hmac.Key;
-                };
-                await context.Users.AddAsync(u);
+
+                await userManager.CreateAsync(u,"Pa$$w0rd");
+                await userManager.AddToRoleAsync(u,Roles.Member);
                 }
             );
-            await context.SaveChangesAsync();
         }
+        var admin = new AppUser{
+            KnownAs = "admin",
+            UserName = "admin",
+            City="",
+            IsMale = true
+        };
+        await userManager.CreateAsync(admin,"Pa$$w0rd");
+        await userManager.AddToRolesAsync(admin,[Roles.Admin,Roles.Moderator]);
     }
 }

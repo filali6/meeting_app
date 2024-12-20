@@ -24,7 +24,7 @@ public class LikesService(DataContext context, IMapper mapper) : ILikesService
         _context.Likes.Remove(like);
     }
 
-    public async Task<IEnumerable<int>> GetCurrentUserLikeIds(int userId)
+    public async Task<IEnumerable<string>> GetCurrentUserLikeIds(string userId)
     {
         return await _context.Likes
             .Where(l => l.SourceUserId == userId)
@@ -32,7 +32,7 @@ public class LikesService(DataContext context, IMapper mapper) : ILikesService
             .ToListAsync();
     }
 
-    public async Task<UserLike?> GetUserLike(int sourceUser, int TargetUser)
+    public async Task<UserLike?> GetUserLike(string sourceUser, string TargetUser)
     {
         return await _context.Likes.FirstOrDefaultAsync(l => l.SourceUserId == sourceUser && l.TargetUserId == TargetUser);
     }
@@ -55,7 +55,7 @@ public class LikesService(DataContext context, IMapper mapper) : ILikesService
                     .ProjectTo<MemberDto>(_mapper.ConfigurationProvider);
                 break;
             default:
-                var likedIds = await GetCurrentUserLikeIds(likesParams.userId);
+                var likedIds = await GetCurrentUserLikeIds(likesParams.userId!);
                 query = likes.Where(x => x.TargetUserId == likesParams.userId && likedIds.Contains(x.SourceUserId))
                     .Select(x => x.SourceUser)
                     .ProjectTo<MemberDto>(_mapper.ConfigurationProvider);

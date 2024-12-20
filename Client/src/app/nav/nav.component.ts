@@ -4,10 +4,11 @@ import { AccountsService } from '../_services/accounts.service';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Toast, ToastrService } from 'ngx-toastr';
+import { HasRoleDirective } from '../_directives/has-role.directive';
 
 @Component({
     selector: 'app-nav',
-    imports: [FormsModule, BsDropdownModule, RouterLink, RouterLinkActive],
+    imports: [FormsModule, BsDropdownModule, RouterLink, RouterLinkActive,HasRoleDirective],
     templateUrl: './nav.component.html',
     styleUrl: './nav.component.css'
 })

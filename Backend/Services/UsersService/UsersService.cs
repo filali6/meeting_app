@@ -6,10 +6,12 @@ using Backend.DTOs;
 using Backend.Helpers;
 using Backend.Models;
 using Backend.Services.PhotoService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
 
 namespace Backend.Services.UsersService;
+
 
 public class UsersService(DataContext context, IMapper mapper, IPhotoService photoService , ILogger<IUsersService> logger) : IUsersService
 {
@@ -40,7 +42,7 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
         return await PagedList<MemberDto>.CreatAsync(query.ProjectTo<MemberDto>(mapper.ConfigurationProvider)
            , userParams.pageNumber, userParams.PageSize);
     }
-    public async Task<AppUser?> GetUserByIdAsync(int id)
+    public async Task<AppUser?> GetUserByIdAsync(string id)
     {
         return await context.Users.FindAsync(id);
     }

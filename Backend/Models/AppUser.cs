@@ -1,13 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using Backend.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Models;
-public class AppUser
+public class AppUser:IdentityUser
 {
-    public int Id { get; set; }
-    public required string UserName { get; set; }
-    public  Byte[] PasswordHash { get; set; }=[];
-    public  Byte[] PasswordSalt { get; set; }=[];
     public DateOnly DateBirth { get; set; }
     public required string KnownAs {get;set;}="tunisia";
     public DateTime Created {get;set;}=DateTime.UtcNow;

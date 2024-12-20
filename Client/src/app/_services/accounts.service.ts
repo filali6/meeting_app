@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { User } from '../_models/User';
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { UserRegister } from '../_models/UserRegister';
 import { LikesService } from './likes.service';
+import { parseJwt } from './paginationHelper';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,15 @@ export class AccountsService {
   http = inject(HttpClient);
   BaseUrl = environment.apiUrl+"account/";
   currentUser = signal<User | null>(null);
+  roles=computed(()=>{
+    const user = this.currentUser();
+    if(user && user.token){
+      console.log("creat role arr");
+      const role=parseJwt(user.token)
+      return Array.isArray(role)? role : [role];
+    }
+    return [];
+  })
   router = inject(Router);
   login(model: any) {
     return this.http.post<User>(this.BaseUrl + "login", model).pipe(
