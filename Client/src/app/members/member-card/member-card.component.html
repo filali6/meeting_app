@@ -1,13 +1,17 @@
-
-    <div class="card border border-secondary rounded h-100"  style=" width: 18rem; opacity: 1;">
-      <img class="card-img-top" [src]="member()?.photoUrl" alt="Card image cap" [alt]="member()?.userName">
-      <div class="card-body">
-        <h5 class="card-title">{{member()?.userName}}</h5>
-        <p class="card-text">{{member()?.introduction}}</p>
-        @if(hasLiked()){
-          <i class="fa fa-heart ms-2 me-1" style="color: rebeccapurple;"></i>
-        }
-        <a  routerLink="/member/{{member()?.userName}}" class="btn btn-light">Inspect</a>
-        <button  class="btn btn-info ms-5" (click)="toggleLike()"><i class="fa fa-heart"></i></button>
-      </div>
-    </div>
+<div class="card border border-secondary rounded h-100" style=" width: 18rem; opacity: 1;">
+  <img class="card-img-top" [src]="member()?.photoUrl" alt="Card image cap" [alt]="member()?.userName">
+  <div class="card-body">
+    <h5 class="card-title">
+      <span [class.is-online]="isOnline()">
+        <i class="fa fa-user"></i>
+      </span>
+      {{member()?.userName}}
+    </h5>
+    <p class="card-text">{{member()?.introduction}}</p>
+    @if(hasLiked()){
+    <i class="fa fa-heart ms-2 me-1" style="color: rebeccapurple;"></i>
+    }
+    <a routerLink="/member/{{member()?.userName}}" class="btn btn-light">Inspect</a>
+    <button class="btn btn-info ms-5" (click)="toggleLike()"><i class="fa fa-heart"></i></button>
+  </div>
+</div>

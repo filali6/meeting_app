@@ -9,11 +9,11 @@
                             [src]="member.photoUrl"
                             alt="..." width="130" class=" rounded-3 mb-2 img-thumbnail"></div>
                     <div class="media-body mb-5 text-white">
-                        <h4 class="mt-0 mb-0">{{member.knownAs}}</h4>
+                        <h4 class="mt-0 mb-0">{{member.knownAs}}@if (presenceService.onlineUsers().includes(member.userName!)) { <span><i class="fa-solid fa-circle-user"></i></span> }</h4>
                         <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>{{member.city}}</p>
                         <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>{{member.age}} Y/O</p>
                         <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>member since: {{member.created | date : 'dd MMM yyyy'}}</p>
-                        <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>LAST active: {{member.lastActive | date}}</p>
+                        <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>LAST active: {{member.lastActive | timeago}}</p>
                     </div>
                 </div>
             </div>
@@ -63,7 +63,7 @@
             </div>
         </tab>
         <tab heading="Messages" (selectTab)="onTabActivated($event)" >
-            <app-message-member [username]="member.userName!" [messages]="messages" (outputMessage)="addMessage($event)"></app-message-member>
+            <app-message-member [username]="member.userName!" ></app-message-member>
         </tab>
         </tabset>
         </div>

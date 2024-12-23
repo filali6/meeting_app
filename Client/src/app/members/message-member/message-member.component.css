@@ -154,6 +154,7 @@ background-color: #82ccdd;
 padding: 10px;
 position: relative;
 color: black;
+min-width: 17%;
 }
 .msg_cotainer_send{
 margin-top: auto;
@@ -164,6 +165,7 @@ background-color: #78e08f;
 padding: 10px;
 position: relative;
 color: black;
+min-width: 17%;
 }
 .msg_time{
 position: absolute;
@@ -171,6 +173,7 @@ left: 0;
 bottom: -15px;
 color: rgba(255,255,255,0.5);
 font-size: 10px;
+ 
 }
 .msg_time_send{
 position: absolute;
