@@ -12,5 +12,4 @@ public interface ILikesService
     Task<IEnumerable<string>> GetCurrentUserLikeIds(string userId);
     void DeleteLike(UserLike like);
     void AddLike(UserLike like);
-    Task<bool> saveChangeAsync();
 }

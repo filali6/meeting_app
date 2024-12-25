@@ -64,8 +64,5 @@ public class LikesService(DataContext context, IMapper mapper) : ILikesService
         return await PagedList<MemberDto>.CreatAsync(query,likesParams.pageNumber,likesParams.PageSize);
     }
 
-    public async Task<bool> saveChangeAsync()
-    {
-        return await _context.SaveChangesAsync() > 0;
-    }
+
 }

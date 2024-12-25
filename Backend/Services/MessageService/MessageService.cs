@@ -78,7 +78,6 @@ public class MessageService(DataContext context,IMapper mapper): IMessageService
                          .ForEachAsync(e=>e.ReadDate=DateTime.Now);
         
             
-    await Task.Run(SaveChangeAsync);
     return res;
     }
 
@@ -87,8 +86,5 @@ public class MessageService(DataContext context,IMapper mapper): IMessageService
         _context.Connections.Remove(connection);
     }
 
-    public async Task<bool> SaveChangeAsync()
-    {
-        return await _context.SaveChangesAsync()>0;
-    }
+
 }

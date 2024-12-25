@@ -1,4 +1,4 @@
-<div class="card-body msg_card_body">
+<div class="card-body msg_card_body" #scrollMe>
     @for (message of messageService.messageThread(); track message.id) {
         @if(message.sourceUsername===username()){
             <div class="d-flex justify-content-start mb-4">
@@ -14,6 +14,7 @@
         }
         @else {
             <div class="d-flex justify-content-end mb-4">
+                <span class="read">@if(message.readDate){ {{message.readDate|timeago}} } @else {unread}</span>
                 <div class="msg_cotainer_send">
                     {{message.content}}
                     <span class="msg_time_send">{{message.sentDate|date:"dd-MM-yyyy HH:mm"}}</span> 

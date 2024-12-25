@@ -23,7 +23,7 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
     public async Task<MemberDto?> GetMemberAsync(string username)
     {
         var m = await context.Users
-            .Where(x => x.UserName.ToLower() == username.ToLower())
+            .Where(x => x.NormalizedUserName == username.ToUpper())
             .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
             .SingleOrDefaultAsync();
         return m;
@@ -61,10 +61,7 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
             .Include(x => x.Photos)
             .ToListAsync();
     }
-    public async Task<bool> SaveAllAsync()
-    {
-        return await context.SaveChangesAsync() > 0;
-    }
+
 
     public async Task toMainPhoto(string username, int photoId)
     {
@@ -90,7 +87,6 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
     {
         AppUser? user = await GetUserByUsernameAsync(username);
         mapper.Map(member, user);
-        await SaveAllAsync();
     }
     public async Task DeletePhoto(string username, int photoId)
     {

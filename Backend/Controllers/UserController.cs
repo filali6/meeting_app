@@ -6,6 +6,7 @@ using Backend.Extensions;
 using Backend.Helpers;
 using Backend.Models;
 using Backend.Services.PhotoService;
+using Backend.Services.UnitOfWork;
 using Backend.Services.UsersService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -15,19 +16,17 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend.Controllers
 {
 [Authorize]
-    public class UserController(ILogger<UserController> logger, IUsersService userRepository,IPhotoService  photo,IMapper mapper) : BaseApiController
+    public class UserController(ILogger<UserController> logger, IUnitOfWork _unitOfWork,IPhotoService  photo,IMapper mapper) : BaseApiController
     {
         private readonly IMapper mapper=mapper;
         private readonly IPhotoService  _photo = photo;
         private readonly ILogger<UserController> _logger = logger;
-        private readonly IUsersService userRepository = userRepository;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
-            var u=await User.getUserToken(userRepository);
-            userParams.CurrentUser=u?.UserName;
-            var users = await userRepository.GetMembersAsync(userParams);
+            userParams.CurrentUser=User.getUsernameFromToken();
+            var users = await  _unitOfWork.UsersService.GetMembersAsync(userParams);
             Response.AddPaginationHeader(users);
             return Ok(users);
         }
@@ -36,7 +35,7 @@ namespace Backend.Controllers
         [HttpGet("{username}")]  
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            var user = await userRepository.GetMemberAsync(username);
+            var user = await  _unitOfWork.UsersService.GetMemberAsync(username);
 
             if (user == null) return NotFound();
 
@@ -48,7 +47,7 @@ namespace Backend.Controllers
             
             string? username=User.FindFirstValue(ClaimTypes.Name);
             if(username == null)return Unauthorized("login to update your profile");
-            await userRepository.UpdateMember(username,member);
+            await  _unitOfWork.UsersService.UpdateMember(username,member);
             return NoContent();
         }
          
@@ -56,7 +55,8 @@ namespace Backend.Controllers
         public async Task<ActionResult<PhotoDTO>> UploadPhoto(IFormFile file)
         {
             
-            var user=await User.getUserToken(userRepository);
+            var userId= User.getUserIdFromToken();
+            var user=await _unitOfWork.UsersService.GetUserByIdAsync(userId!);
             var result = await _photo.PhotoUploadAsync(file);
             if(result.Error!=null) return BadRequest(result.Error.Message);
             Photo photo= new()
@@ -65,7 +65,7 @@ namespace Backend.Controllers
                 PublicId=result.PublicId
             };
             user!.Photos.Add(photo);
-            await userRepository.SaveAllAsync();
+            await  _unitOfWork.Complete();
             return CreatedAtAction(nameof(GetUser),new {username=user.UserName},mapper.Map<PhotoDTO>(photo));
         }
         [HttpPut("{idPhoto}")]
@@ -73,7 +73,7 @@ namespace Backend.Controllers
         {
            string? username=User.FindFirstValue(ClaimTypes.Name);
             if(username == null)return Unauthorized("login to update your profile");
-            await userRepository.toMainPhoto(username,idPhoto);
+            await  _unitOfWork.UsersService.toMainPhoto(username,idPhoto);
             return NoContent(); 
         }
         [HttpDelete("{idPhoto}")]
@@ -81,7 +81,7 @@ namespace Backend.Controllers
         {
            string? username=User.FindFirstValue(ClaimTypes.Name);
             if(username == null)return Unauthorized("login to update your profile");
-            await userRepository.DeletePhoto(username,idPhoto);
+            await  _unitOfWork.UsersService.DeletePhoto(username,idPhoto);
             return Ok(); 
         }
          
