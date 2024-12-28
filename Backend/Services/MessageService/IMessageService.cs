@@ -12,5 +12,9 @@ public interface IMessageService
     Task<Message?> GetMessage(int id);
     Task<PagedList<MessageDTO>> GetMessagesForUser(MessageParams messageParams);
     Task<IEnumerable<MessageDTO>> GetMessageThread(string currentUsername,string targetUsername);
-    Task<bool> SaveChangeAsync();
+    void AddGroup(Group group);
+    void RemoveConnection(Connection connection);
+    Task<Connection?> GetConnection(string connectionId);
+    Task<Group?> GetGroup(string groupName);
+    Task<Group?> GetGroupFromConnection(string connectionId);
 }

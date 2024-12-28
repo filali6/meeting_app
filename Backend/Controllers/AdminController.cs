@@ -1,5 +1,6 @@
+using Backend.Data;
 using Backend.Models;
-using Backend.Services.UsersService;
+using Backend.Services.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend.Controllers
 {
 
-    public class AdminController(UserManager<AppUser> userManager) : BaseApiController
+    public class AdminController(UserManager<AppUser> userManager,IUnitOfWork unitOfWork) : BaseApiController
     {
         [Authorize(Policy = "RequireAdminRole")]
         [HttpGet("users-with-roles")]
@@ -59,11 +60,20 @@ namespace Backend.Controllers
 
         [Authorize(Policy = "ModeratePhotoRole")]
         [HttpGet("photos-to-moderate")]
-        public ActionResult GetPhotosForModeration()
+        public async Task<ActionResult> GetPhotosForModerationAsync()
         {
-            //var photos = await unitOfWork.PhotoRepository.GetUnapprovedPhotos();
+            var photos = await unitOfWork.UsersService.GetPhotosToApprouve();
 
-            return Ok("admin yeah");
+            return Ok(photos);
+        }
+        [Authorize(Policy = "ModeratePhotoRole")]
+        [HttpPut("approuve/{id:int}")]
+        public async Task<ActionResult> ApprouvePhoto(int id)
+        {
+            var result =await unitOfWork.UsersService.ApprouvePhoto(id);
+            if(!result) return BadRequest("can not approuve photo");
+            await unitOfWork.Complete();
+            return NoContent();
         }
     }
 }

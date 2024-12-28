@@ -6,7 +6,9 @@ using Backend.Services.AccountService;
 using Backend.Services.LikesService;
 using Backend.Services.MessageService;
 using Backend.Services.PhotoService;
+using Backend.Services.UnitOfWork;
 using Backend.Services.UsersService;
+using Backend.SiognalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
@@ -31,7 +33,11 @@ public static class ApplicationServices
         collection.AddScoped<IPhotoService,PhotoService>();
         collection.AddScoped<ILikesService,LikesService>();
         collection.AddScoped<IMessageService,MessageService>();
+        collection.AddScoped<IUnitOfWork,UnitOfWork>();
         collection.AddScoped<LastActive>();
+        collection.AddSignalR();
+        collection.AddSingleton<PresenceTracker>();
         return collection;
+
     }
 }

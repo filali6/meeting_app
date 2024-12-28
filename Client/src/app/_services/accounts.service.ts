@@ -7,12 +7,14 @@ import { environment } from '../../environments/environment';
 import { UserRegister } from '../_models/UserRegister';
 import { LikesService } from './likes.service';
 import { parseJwt } from './paginationHelper';
+import { PresenceService } from './presence.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountsService {
   private likeService = inject(LikesService);//carefull from circular dependancy when inject service into service
+  private presenceService = inject(PresenceService);
   http = inject(HttpClient);
   BaseUrl = environment.apiUrl+"account/";
   currentUser = signal<User | null>(null);
@@ -38,8 +40,9 @@ export class AccountsService {
   }
   logout() {
     this.currentUser.set(null);
-    localStorage.clear();
-    this.router.navigateByUrl('')
+    localStorage.removeItem("user");
+    this.router.navigateByUrl('');
+    this.presenceService.stopHubConnection();
   }
   register(model: UserRegister) {
 
@@ -55,5 +58,6 @@ export class AccountsService {
     localStorage.setItem("user", JSON.stringify(user));
     this.currentUser.set(user);
     this.likeService.getLikeIds();
+    this.presenceService.creatHubConnection(user);
   }
 }

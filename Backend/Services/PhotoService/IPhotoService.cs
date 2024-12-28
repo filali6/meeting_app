@@ -8,6 +8,5 @@ public interface IPhotoService
 {
     public Task<ImageUploadResult> PhotoUploadAsync(IFormFile file);
     public Task<DeletionResult> PhotoDeleteAsync(string publicId);
-    public Task<PhotoDTO> AddPhotoAsync(IFormFile file,string username);
 
 }

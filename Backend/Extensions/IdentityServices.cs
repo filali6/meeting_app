@@ -33,6 +33,18 @@ public static class IdentityServices
             ValidateIssuer = false,
             ValidateAudience = false
         };
+        //to make authorization for SignalR 
+        option.Events=new JwtBearerEvents{
+            OnMessageReceived = context =>{
+                var accesToken=context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+                if(!string.IsNullOrEmpty(accesToken) && path.StartsWithSegments("/hubs"))
+                {
+                    context.Token=accesToken;
+                }
+                return Task.CompletedTask;
+            }
+        };
     });
         services.AddAuthorizationBuilder()
                 .AddPolicy(Policies.RequireAdminRole, policy => policy.RequireRole(Roles.Admin))

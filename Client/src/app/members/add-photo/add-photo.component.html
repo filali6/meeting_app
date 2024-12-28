@@ -5,10 +5,15 @@
     <div class="col-2 m-3">
         <img [src]="photo.url" alt="image" class="img-thumbnail mb-1">
         <div class="text-center">
-            <button class="btn btn-sm" 
+            @if (photo.approuved) {
+                <button class="btn btn-sm" 
             [ngClass]="{'btn-primary': photo.isMain}" 
             (click)="toMain(photo)">Main</button>
             <button class="btn btn-sm btn-danger" (click)="deletePhoto(photo)"><i class="fa fa-trash"></i></button>
+            }
+            @else {
+                <button class="btn btn-sm btn-outline-warning" disabled>not Approuved</button>
+            }
         </div>
     </div>
  }

@@ -12,20 +12,23 @@ public class AutoMapperProfiles:Profile
         CreateMap<AppUser,MemberDto>()
             .ForMember(d=>d.Age,o=>o.MapFrom(x=>x.DateBirth.CalculateAge()))
             .ForMember(d=>d.PhotoUrl,o=>o.MapFrom(s=>s.Photos.FirstOrDefault(x=>x.IsMain)!.Url!=null
-                                                        ?s.Photos.FirstOrDefault(x=>x.IsMain)!.Url
-                                                        :"https://res.cloudinary.com/dnuqsdk2a/image/upload/v1733093753/user_yeqwso.png"));
+                                                    ?s.Photos.FirstOrDefault(x=>x.IsMain)!.Url
+                                                    :"https://res.cloudinary.com/dnuqsdk2a/image/upload/v1733093753/user_yeqwso.png"));
         CreateMap<Photo,PhotoDTO>();
         CreateMap<EditMemberDTO,AppUser>();
         CreateMap<RegisterDTO,AppUser>();
         CreateMap<Message,MessageDTO>()
         .ForMember(d=>d.TargetPhotoUrl,o=>o.MapFrom(s=>s.TargetUser.Photos.FirstOrDefault(x=>x.IsMain)!.Url!=null
-                                                        ?s.TargetUser.Photos.FirstOrDefault(x=>x.IsMain)!.Url
-                                                        :"https://res.cloudinary.com/dnuqsdk2a/image/upload/v1733093753/user_yeqwso.png"))
+                                                    ?s.TargetUser.Photos.FirstOrDefault(x=>x.IsMain)!.Url
+                                                    :"https://res.cloudinary.com/dnuqsdk2a/image/upload/v1733093753/user_yeqwso.png"))
         .ForMember(d=>d.SourcePhotoUrl,o=>o.MapFrom(s=>s.SourceUser.Photos.FirstOrDefault(x=>x.IsMain)!.Url!=null
-                                                        ?s.SourceUser.Photos.FirstOrDefault(x=>x.IsMain)!.Url
-                                                        :"https://res.cloudinary.com/dnuqsdk2a/image/upload/v1733093753/user_yeqwso.png"))
+                                                    ?s.SourceUser.Photos.FirstOrDefault(x=>x.IsMain)!.Url
+                                                    :"https://res.cloudinary.com/dnuqsdk2a/image/upload/v1733093753/user_yeqwso.png"))
         .ForMember(d=>d.SourceUsername,o=>o.MapFrom(s=>s.SourceUser.UserName))
         .ForMember(d=>d.TargetUsername,o=>o.MapFrom(s=>s.TargetUser.UserName));
+
+        CreateMap<DateTime,DateTime>().ConvertUsing(d=>DateTime.SpecifyKind(d,DateTimeKind.Utc));
+        CreateMap<DateTime?,DateTime?>().ConvertUsing(d=>d.HasValue?DateTime.SpecifyKind(d.Value,DateTimeKind.Utc):null);
     }
 
 }

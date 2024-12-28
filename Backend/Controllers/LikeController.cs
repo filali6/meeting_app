@@ -7,6 +7,7 @@ using Backend.Helpers;
 using Backend.Models;
 using Backend.Services.LikesService;
 using Backend.Services.PhotoService;
+using Backend.Services.UnitOfWork;
 using Backend.Services.UsersService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,47 +19,45 @@ namespace Backend.Controllers
 {
 
     [Authorize]
-    public class LikeController(IUsersService userService, ILikesService likesService) : BaseApiController
+    public class LikeController(IUnitOfWork _UnitOfWork) : BaseApiController
     {
-        private readonly ILikesService _likesService = likesService;
-        private readonly IUsersService _userService = userService;
-
+        
         [HttpPost("{targetId}")]
         public async Task<ActionResult> ToggleLike(string targetId)
         {
-            var user = await User.getUserFromIdToken(_userService);
-            if (user == null) return Unauthorized("log in please");
-            if (user.Id == targetId) return BadRequest("do not like yourself");
-            var likeExist = await _likesService.GetUserLike(user.Id, targetId);
+           
+            var userId =User.getUserIdFromToken();
+            if (userId==null || userId == targetId) return BadRequest("do not like yourself");
+            var likeExist = await  _UnitOfWork.LikeService.GetUserLike(userId, targetId);
             if (likeExist == null)
             {
                 UserLike newLike = new UserLike
                 {
-                    SourceUserId = user.Id,
+                    SourceUserId = userId,
                     TargetUserId = targetId
                 };
-                _likesService.AddLike(newLike);
+                 _UnitOfWork.LikeService.AddLike(newLike);
             }
             else
             {
-                _likesService.DeleteLike(likeExist);
+                 _UnitOfWork.LikeService.DeleteLike(likeExist);
             }
-            await _likesService.saveChangeAsync();
+            await  _UnitOfWork.Complete();
 
             return Ok();
         }
 
         [HttpGet("list")]
         public async Task<ActionResult<IEnumerable<string>>> GetCurrentUserLikeIds(){
-            var user = await User.getUserFromIdToken(_userService);
-            return Ok(await _likesService.GetCurrentUserLikeIds(user!.Id));
+            var user =  User.getUserIdFromToken();
+            return Ok(await  _UnitOfWork.LikeService.GetCurrentUserLikeIds(user));
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUserLikes([FromQuery]LikesParams likesParams){
             
-            var user = await User.getUserFromIdToken(_userService);
-            likesParams.userId=user!.Id;
-            var users = await _likesService.GetUserLikes(likesParams);
+            var userId = User.getUserIdFromToken();
+            likesParams.userId=userId;
+            var users = await  _UnitOfWork.LikeService.GetUserLikes(likesParams);
             Response.AddPaginationHeader(users);
             return Ok(users);
         }

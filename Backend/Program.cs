@@ -3,6 +3,7 @@ using Backend.Data;
 using Backend.Extensions;
 using Backend.middlewares;
 using Backend.Models;
+using Backend.SiognalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,11 +23,14 @@ app.UseMiddleware<ApiExceptionMiddleware>();
 //app.UseMiddleware<DelayTesting>();//this middlware to test when request takes long time 
 
 //cors
- app.UseCors(x => { x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200", "https://localhost:4200"); }); 
+ app.UseCors(x => { x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200", "https://localhost:4200"); }); 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+//signalR hubs endpoints
+app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<MessageHub>("hubs/message");
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 try
@@ -34,6 +38,7 @@ try
     var context = services.GetRequiredService<DataContext>();
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    await context.Database.ExecuteSqlRawAsync("DELETE FROM [Connections]");
     await context.Database.MigrateAsync();
     await Seed.SeedUsers(userManager,roleManager);
     await Seed.SeedUsers(userManager,roleManager);

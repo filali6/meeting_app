@@ -8,8 +8,10 @@ namespace Backend.Data;
 public class DataContext(DbContextOptions options) : IdentityDbContext(options) 
 {
     public DbSet<Photo> Photos { get; set; }
-    public DbSet<UserLike> Likes { get; set; }
-    public DbSet<Message> Messages { get; set; }
+    public DbSet<UserLike> Likes {get;set;}
+    public DbSet<Message> Messages {get;set;}
+    public DbSet<Group> Groups {get;set;}
+    public DbSet<Connection> Connections {get;set;}
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

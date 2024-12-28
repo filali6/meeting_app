@@ -1,7 +1,12 @@
 import { CanDeactivateFn } from '@angular/router';
 import { MemberEditComponent } from '../members/member-edit/member-edit.component';
+import { inject } from '@angular/core';
+import { ConfirmService } from '../_services/confirm.service';
 
 export const editGuardGuard: CanDeactivateFn<MemberEditComponent> = (component) => {
-  if(component.form?.dirty)return confirm("Changes has been made, if you continue they will be lost");
+  const confirmService=inject(ConfirmService);
+  if(component.form?.dirty){
+    return confirmService.confirm()??false
+  }
   return true;
 };

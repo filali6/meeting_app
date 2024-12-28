@@ -8,7 +8,7 @@ import { DatepickerComponent } from "../_forms/datepicker/datepicker.component";
 import { UserRegister } from '../_models/UserRegister';
 @Component({
     selector: 'app-register-form',
-    imports: [ReactiveFormsModule, JsonPipe, TextInputComponent, DatepickerComponent],
+    imports: [ReactiveFormsModule, TextInputComponent, DatepickerComponent],
     templateUrl: './register-form.component.html',
     styleUrl: './register-form.component.css'
 })

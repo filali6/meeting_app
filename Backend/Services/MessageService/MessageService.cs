@@ -12,6 +12,12 @@ namespace Backend.Services.MessageService;
 public class MessageService(DataContext context,IMapper mapper): IMessageService
 {
     private readonly DataContext _context=context;
+
+    public void AddGroup(Group group)
+    {
+        _context.Groups.Add(group);
+    }
+
     public async void AddMessage(Message message)
     {
        await  _context.Messages.AddAsync(message);
@@ -20,6 +26,22 @@ public class MessageService(DataContext context,IMapper mapper): IMessageService
     public void DeleteMessage(Message message)
     {
          _context.Messages.Remove(message);
+    }
+
+    public async Task<Connection?> GetConnection(string connectionId)
+    {
+        return await _context.Connections.FindAsync(connectionId);
+    }
+
+    public async Task<Group?> GetGroup(string groupName)
+    {
+        return await _context.Groups.Include(x=>x.Connections)
+                .FirstOrDefaultAsync(x=>x.Name==groupName);
+    }
+
+    public async Task<Group?> GetGroupFromConnection(string connectionId)
+    {
+        return await _context.Groups.Include(g=>g.Connections).Where(x=>x.Connections.Any(c=>c.ConnectionId==connectionId)).FirstOrDefaultAsync();
     }
 
     public async Task<Message?> GetMessage(int id)
@@ -44,21 +66,25 @@ public class MessageService(DataContext context,IMapper mapper): IMessageService
 
     public async Task<IEnumerable<MessageDTO>> GetMessageThread(string currentUsername, string targetUsername)
     {
-       await _context.Messages.Where(m=>m.SourceUser.UserName==targetUsername
-                                        && m.TargetUser.UserName==currentUsername
-                                        && m.ReadDate==null)
-                         .ForEachAsync(e=>e.ReadDate=DateTime.Now);
-
-        return await  _context.Messages.Where(m=>((m.SourceUser.UserName==currentUsername && m.TargetUser.UserName==targetUsername)
+        var res= await  _context.Messages.Where(m=>((m.SourceUser.UserName==currentUsername && m.TargetUser.UserName==targetUsername)
                                                ||(m.SourceUser.UserName==targetUsername && m.TargetUser.UserName==currentUsername))
                                                && !m.SourceDeleted)
                                         .OrderBy(m=>m.SentDate)
                                         .ProjectTo<MessageDTO>(mapper.ConfigurationProvider)
-                                        .ToListAsync();        
+                                        .ToListAsync();    
+       await _context.Messages.Where(m=>m.SourceUser.UserName==targetUsername
+                                        && m.TargetUser.UserName==currentUsername
+                                        && m.ReadDate==null)
+                         .ForEachAsync(e=>e.ReadDate=DateTime.Now);
+        
+            
+    return res;
     }
 
-    public async Task<bool> SaveChangeAsync()
+    public void RemoveConnection(Connection connection)
     {
-        return await _context.SaveChangesAsync()>0;
+        _context.Connections.Remove(connection);
     }
+
+
 }

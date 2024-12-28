@@ -11,5 +11,6 @@ public class Photo
      public string? PublicId {get;set;}
      public  string? AppUserId{get;set;}="";
      public AppUser AppUser {get;set;}=null!;
+     public bool Approuved{get;set;}=false;
 
 }

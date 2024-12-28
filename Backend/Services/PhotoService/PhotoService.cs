@@ -15,10 +15,7 @@ public class PhotoService : IPhotoService
         _cloud=new Cloudinary(acc);
     }
 
-    public  Task<PhotoDTO> AddPhotoAsync(IFormFile file, string username)
-    {
-        throw new NotImplementedException();
-    }
+
 
     public async Task<DeletionResult> PhotoDeleteAsync(string publicId)
     {

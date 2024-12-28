@@ -3,6 +3,7 @@ using System;
 using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241222225051_groupsAdded")]
+    partial class groupsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -93,9 +96,6 @@ namespace Backend.Data.Migrations
 
                     b.Property<string>("AppUserId")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("Approuved")
-                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsMain")
                         .HasColumnType("INTEGER");
@@ -489,8 +489,6 @@ namespace Backend.Data.Migrations
                     b.Navigation("MessagesSent");
 
                     b.Navigation("Photos");
-
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }
