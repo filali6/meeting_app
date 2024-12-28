@@ -1,1 +1,13 @@
-<p>photo-management works!</p>
+<div class="row d-flex">
+
+    @for (photo of photos(); track photo.id) {
+    <div class="col-2 m-3">
+        <img [src]="photo.url" alt="image" class="img-thumbnail mb-1">
+        <div class="text-center">
+            <button class="btn btn-sm" (click)="Approuve(photo)">approuve</button>
+            <button class="btn btn-sm btn-danger" (click)="deletePhoto(photo)"><i class="fa fa-trash"></i></button>
+        </div>
+    </div>
+    }
+
+</div>

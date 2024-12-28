@@ -35,7 +35,9 @@ namespace Backend.Controllers
         [HttpGet("{username}")]  
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            var user = await  _unitOfWork.UsersService.GetMemberAsync(username);
+            var currentUsername = User.getUsernameFromToken();
+            if(currentUsername==null)return BadRequest("can not find user! please login !");
+            var user = await  _unitOfWork.UsersService.GetMemberAsync(username,username.ToUpper()==currentUsername.ToUpper());
 
             if (user == null) return NotFound();
 

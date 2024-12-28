@@ -20,16 +20,23 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
     private readonly IMapper mapper = mapper;
     private readonly ILogger<IUsersService> _logger=logger;
 
-    public async Task<MemberDto?> GetMemberAsync(string username)
+    public async Task<MemberDto?> GetMemberAsync(string username,bool isConnected)
     {
-        var m = await context.Users
-            .Where(x => x.NormalizedUserName == username.ToUpper())
-            .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
-            .SingleOrDefaultAsync();
-        return m;
+
+        var m = isConnected?
+            await context.Users
+                .Where(x => x.NormalizedUserName == username.ToUpper())
+                .Include(u=>u.Photos)
+                .SingleOrDefaultAsync()
+            :await context.Users
+                .Where(x => x.NormalizedUserName == username.ToUpper())
+                .Include(u=>u.Photos.Where(p => p.Approuved == true))
+                .SingleOrDefaultAsync();
+        return mapper.Map<MemberDto>(m);
     }
     public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
     {
+
         var query = context.Users.AsQueryable();
         query = query.Where(x => x.UserName != userParams.CurrentUser);
         _logger.LogInformation(userParams.Gender);
@@ -39,7 +46,8 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
         //var maxDob=DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MaxAge-1));
 
         //query=query.Where(u=>u.DateBirth>=minDob && u.DateBirth<=maxDob);
-        return await PagedList<MemberDto>.CreatAsync(query.ProjectTo<MemberDto>(mapper.ConfigurationProvider)
+        query=query.Include(u=>u.Photos.Where(p => p.Approuved == true));
+        return await PagedList<MemberDto>.CreatAsync(query.Select(u=>mapper.Map<MemberDto>(u))
            , userParams.pageNumber, userParams.PageSize);
     }
     public async Task<AppUser?> GetUserByIdAsync(string id)
@@ -66,7 +74,7 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
     public async Task toMainPhoto(string username, int photoId)
     {
         var userPhoto = await context.Photos.Where(p => p.AppUser.UserName == username).ToListAsync();
-        if (userPhoto.Any(p => p.Id == photoId))
+        if (userPhoto.Any(p => p.Id == photoId&&p.Approuved))
         {
             userPhoto.ForEach(p =>
             {
@@ -90,8 +98,7 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
     }
     public async Task DeletePhoto(string username, int photoId)
     {
-        var userPhoto = await context.Photos.Where(p => p.AppUser.UserName == username).FirstOrDefaultAsync(p => p.Id == photoId);
-        if (userPhoto == null) throw new Exception("photo not found ");
+        var userPhoto = await context.Photos.Where(p => p.AppUser.UserName == username).FirstOrDefaultAsync(p => p.Id == photoId) ?? throw new Exception("photo not found ");
         if (userPhoto.IsMain) throw new Exception("main photo can not be deleted");
 
         context.Entry(userPhoto).State = EntityState.Deleted;
@@ -103,4 +110,17 @@ public class UsersService(DataContext context, IMapper mapper, IPhotoService pho
         await context.SaveChangesAsync();
 
     }
+
+    public async Task<bool> ApprouvePhoto(int photoId)
+    {
+        var photo = await context.Photos.FirstOrDefaultAsync(p=>p.Id==photoId && !p.Approuved);
+        if(photo==null)return false;
+        photo.Approuved=true;
+        return true;
+    }
+    public async Task<List<PhotoDTO>> GetPhotosToApprouve()
+    {
+        return await context.Photos.Where(p=>!p.Approuved).ProjectTo<PhotoDTO>(mapper.ConfigurationProvider).ToListAsync();
+    }
+
 }
