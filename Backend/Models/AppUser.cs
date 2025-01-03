@@ -20,6 +20,4 @@ public class AppUser:IdentityUser
     public List<UserLike> LikedBy{get;set;}=[];
    public List<Message> MessagesSent{get;set;}=[];
     public List<Message> MessagesReceived{get;set;}=[];
-    public ICollection<AppUserRole> UserRoles {get;set;}= [];
-
 }

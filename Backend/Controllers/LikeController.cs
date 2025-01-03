@@ -50,6 +50,7 @@ namespace Backend.Controllers
         [HttpGet("list")]
         public async Task<ActionResult<IEnumerable<string>>> GetCurrentUserLikeIds(){
             var user =  User.getUserIdFromToken();
+            if(user==null) return BadRequest();
             return Ok(await  _UnitOfWork.LikeService.GetCurrentUserLikeIds(user));
         }
         [HttpGet]
