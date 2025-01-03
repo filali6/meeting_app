@@ -29,7 +29,7 @@ public class DataContext(DbContextOptions options) : IdentityDbContext(options)
             .HasOne(s=>s.TargetUser)
             .WithMany(l=>l.LikedBy)
             .HasForeignKey(s=>s.TargetUserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<Message>()
             .HasOne(s=>s.SourceUser)
