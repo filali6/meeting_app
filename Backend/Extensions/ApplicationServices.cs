@@ -22,7 +22,7 @@ public static class ApplicationServices
         collection.AddControllers();
         collection.AddDbContext<DataContext>(opt =>
         {
-            opt.UseSqlServer(conf.GetConnectionString("DefaultConnection"));
+            opt.UseSqlite(conf.GetConnectionString("DefaultConnection"));
         });
 
         collection.AddCors();

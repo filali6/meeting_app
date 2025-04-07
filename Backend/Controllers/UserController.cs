@@ -32,7 +32,7 @@ namespace Backend.Controllers
             return Ok(users);
         }
 
-        [Authorize( Roles ="admin")]
+        [Authorize( Roles ="admin,member")]
 
         
         [HttpGet("{username}")]  
