@@ -24,7 +24,7 @@ public static class ApplicationServices
         {
             opt.UseSqlite(conf.GetConnectionString("DefaultConnection"));
         });
-
+        
         collection.AddCors();
         collection.AddScoped<IUsersService,UsersService>();
         collection.AddScoped<IAccountService,AccountService>();
