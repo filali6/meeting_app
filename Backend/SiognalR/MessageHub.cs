@@ -70,9 +70,12 @@ public class MessageHub(IUnitOfWork unitOfWork,
             }
 
         }
+
         //unitOfWork.MessageService.AddMessage(newMessage);
         var command = new SendMessageCommand(unitOfWork.MessageService, newMessage);
         await new MessageCommandDispatcher().DispatchAsync(command);
+        Console.WriteLine("🧠 Commande créée dans le Hub");
+        
         if (await unitOfWork.Complete())
         {
             await Clients.Group(groupName).SendAsync("NewMessage", mapper.Map<MessageDTO>(newMessage));
