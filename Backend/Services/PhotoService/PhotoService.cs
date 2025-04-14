@@ -11,6 +11,8 @@ public class PhotoService : IPhotoService
 {
     private readonly ICloudinary _cloud;
     public PhotoService(IOptions<CloudinarySettings> cloudOptions){
+        Console.WriteLine(" PhotoService instancié via la factory");
+
         var acc = new Account(cloudOptions.Value.CloudName,cloudOptions.Value.ApiKey,cloudOptions.Value.ApiSecret);
         _cloud=new Cloudinary(acc);
     }

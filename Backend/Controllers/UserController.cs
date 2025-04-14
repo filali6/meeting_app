@@ -16,10 +16,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Backend.Controllers
 {
 [Authorize]
-    public class UserController(ILogger<UserController> logger, IUnitOfWork _unitOfWork,IPhotoService  photo,IMapper mapper) : BaseApiController
+    public class UserController(ILogger<UserController> logger, IUnitOfWork _unitOfWork, PhotoServiceFactory factory, IMapper mapper) : BaseApiController
     {
         private readonly IMapper mapper=mapper;
-        private readonly IPhotoService  _photo = photo;
+        private readonly IPhotoService  _photo = factory.CreatePhotoService();
         private readonly ILogger<UserController> _logger = logger;
 
         [Authorize(Roles ="member")]

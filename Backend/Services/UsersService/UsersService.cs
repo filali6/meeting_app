@@ -13,12 +13,20 @@ using SQLitePCL;
 namespace Backend.Services.UsersService;
 
 
-public class UsersService(DataContext context, IMapper mapper, IPhotoService photoService , ILogger<IUsersService> logger) : IUsersService
+public class UsersService : IUsersService
 {
-    private readonly IPhotoService photoService = photoService;
-    private readonly DataContext context = context;
-    private readonly IMapper mapper = mapper;
-    private readonly ILogger<IUsersService> _logger=logger;
+    private readonly IPhotoService photoService;
+    private readonly DataContext context;
+    private readonly IMapper mapper;
+    private readonly ILogger<IUsersService> _logger;
+
+    public UsersService(DataContext context, IMapper mapper, PhotoServiceFactory factory, ILogger<IUsersService> logger)
+    {
+        this.context = context;
+        this.mapper = mapper;
+        this._logger = logger;
+        this.photoService = factory.CreatePhotoService();  
+    }
 
     public async Task<MemberDto?> GetMemberAsync(string username,bool isConnected)
     {
