@@ -7,6 +7,7 @@ using Backend.Services.MessageService;
 using Backend.Services.UnitOfWork;
 using Backend.Services.UsersService;
 using Microsoft.AspNetCore.SignalR;
+using Backend.Services.MessageCommand;
 
 namespace Backend.SiognalR;
 
@@ -69,7 +70,9 @@ public class MessageHub(IUnitOfWork unitOfWork,
             }
 
         }
-        unitOfWork.MessageService.AddMessage(newMessage);
+        //unitOfWork.MessageService.AddMessage(newMessage);
+        var command = new SendMessageCommand(unitOfWork.MessageService, newMessage);
+        await new MessageCommandDispatcher().DispatchAsync(command);
         if (await unitOfWork.Complete())
         {
             await Clients.Group(groupName).SendAsync("NewMessage", mapper.Map<MessageDTO>(newMessage));

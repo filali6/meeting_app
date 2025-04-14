@@ -20,7 +20,8 @@ public class MessageService(DataContext context,IMapper mapper): IMessageService
 
     public async void AddMessage(Message message)
     {
-       await  _context.Messages.AddAsync(message);
+        Console.WriteLine("✅ AddMessage appelé dans MessageService !");
+        await  _context.Messages.AddAsync(message);
     }
 
     public void DeleteMessage(Message message)
