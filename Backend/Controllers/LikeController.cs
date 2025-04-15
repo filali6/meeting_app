@@ -19,8 +19,10 @@ namespace Backend.Controllers
 {
 
     [Authorize]
-    public class LikeController(IUnitOfWork _UnitOfWork) : BaseApiController
+    public class LikeController(ILikeWriter writer, ILikeReader reader, ILikeBrowser browser, IUnitOfWork unitOfWork) : BaseApiController
+    
     {
+        
         
         [HttpPost("{targetId}")]
         public async Task<ActionResult> ToggleLike(string targetId)
@@ -28,21 +30,24 @@ namespace Backend.Controllers
            
             var userId =User.getUserIdFromToken();
             if (userId==null || userId == targetId) return BadRequest("do not like yourself");
-            var likeExist = await  _UnitOfWork.LikeService.GetUserLike(userId, targetId);
+            Console.WriteLine("👁️ Lecture via ILikeReader → GetUserLike()");
+            var likeExist =  await reader.GetUserLike(userId, targetId);
             if (likeExist == null)
             {
+                Console.WriteLine("➕ Écriture via ILikeWriter → AddLike()");
                 UserLike newLike = new UserLike
                 {
                     SourceUserId = userId,
                     TargetUserId = targetId
                 };
-                 _UnitOfWork.LikeService.AddLike(newLike);
+                writer.AddLike(newLike);
             }
             else
             {
-                 _UnitOfWork.LikeService.DeleteLike(likeExist);
+                Console.WriteLine("➖ Écriture via ILikeWriter → DeleteLike()");
+                writer.DeleteLike(likeExist);
             }
-            await  _UnitOfWork.Complete();
+            await  unitOfWork.Complete();
 
             return Ok();
         }
@@ -51,14 +56,14 @@ namespace Backend.Controllers
         public async Task<ActionResult<IEnumerable<string>>> GetCurrentUserLikeIds(){
             var user =  User.getUserIdFromToken();
             if(user==null) return BadRequest();
-            return Ok(await  _UnitOfWork.LikeService.GetCurrentUserLikeIds(user));
+            return Ok(await reader.GetCurrentUserLikeIds(user));
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUserLikes([FromQuery]LikesParams likesParams){
             
             var userId = User.getUserIdFromToken();
             likesParams.userId=userId;
-            var users = await  _UnitOfWork.LikeService.GetUserLikes(likesParams);
+            var users = await browser.GetUserLikes(likesParams);
             Response.AddPaginationHeader(users);
             return Ok(users);
         }

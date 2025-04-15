@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Services.LikesService;
 
-public class LikesService(DataContext context, IMapper mapper) : ILikesService
+public class LikesService(DataContext context, IMapper mapper) : ILikeWriter, ILikeReader, ILikeBrowser
 {
     private readonly DataContext _context = context;
     private readonly IMapper _mapper = mapper;

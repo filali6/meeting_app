@@ -31,7 +31,12 @@ public static class ApplicationServices
         collection.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         collection.Configure<CloudinarySettings>(conf.GetSection("CloudinarySettings"));
         collection.AddScoped<IPhotoService,PhotoService>();
-        collection.AddScoped<ILikesService,LikesService>();
+        //on a ajouter les interface ici pour satisfaire au ISP pour le service des likes 
+        collection.AddScoped<ILikeWriter, LikesService>();
+        collection.AddScoped<ILikeReader, LikesService>();
+        collection.AddScoped<ILikeBrowser, LikesService>();
+
+        
         collection.AddScoped<IMessageService,MessageService>();
         collection.AddScoped<IUnitOfWork,UnitOfWork>();
         collection.AddScoped<LastActive>();

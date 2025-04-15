@@ -9,7 +9,9 @@ public interface IUnitOfWork
 {
     IUsersService UsersService{get;}
     IMessageService MessageService{get;}
-    ILikesService LikeService{get;}
+    ILikeWriter LikeWriter { get; }
+    ILikeReader LikeReader { get; }
+    ILikeBrowser LikeBrowser { get; }
     Task<bool> Complete();
     bool HasChangers();
 }
