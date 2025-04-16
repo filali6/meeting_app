@@ -58,21 +58,31 @@ namespace Backend.Controllers
          
         [HttpPost("add-photo")]
         public async Task<ActionResult<PhotoDTO>> UploadPhoto(IFormFile file)
-        {
-            
-            var userId= User.getUserIdFromToken();
-            var user=await _unitOfWork.UsersService.GetUserByIdAsync(userId!);
-            var result = await _photo.PhotoUploadAsync(file);
-            if(result.Error!=null) return BadRequest(result.Error.Message);
-            Photo photo= new()
-            {
-                Url = result.SecureUrl.AbsoluteUri,
-                PublicId=result.PublicId
-            };
-            user!.Photos.Add(photo);
-            await  _unitOfWork.Complete();
-            return CreatedAtAction(nameof(GetUser),new {username=user.UserName},mapper.Map<PhotoDTO>(photo));
-        }
+{
+    var userId = User.getUserIdFromToken();
+    var user = await _unitOfWork.UsersService.GetUserByIdAsync(userId!);
+
+    var result = await _photo.PhotoUploadAsync(file);
+    if (result.Error != null) return BadRequest(result.Error.Message);
+
+    Photo photo = new()
+    {
+        Url = result.SecureUrl.AbsoluteUri,
+        PublicId = result.PublicId,
+
+        // ✅ Contrainte OCL : Si aucune photo principale n'existe, on rend celle-ci principale
+        IsMain = !user.Photos.Any(p => p.IsMain)
+    };
+
+    user!.Photos.Add(photo);
+    await _unitOfWork.Complete();
+
+    return CreatedAtAction(
+        nameof(GetUser),
+        new { username = user.UserName },
+        mapper.Map<PhotoDTO>(photo)
+    );
+}
         [HttpPut("{idPhoto}")]
         public async Task<ActionResult> toMain(int idPhoto)
         {
