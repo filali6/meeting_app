@@ -20,7 +20,12 @@ public class MessageController(IUnitOfWork _unitOfWork , IMapper mapper ):BaseAp
     {
         var username=User.getUsernameFromToken();
         if(username==null) throw new Exception("user not identified");
-        if(username.ToLower() == messagecreate.TargetUsername.ToLower())return BadRequest("do not message yourself");
+        if (string.IsNullOrWhiteSpace(messagecreate.Content))
+         
+        if (username.ToLower() == messagecreate.TargetUsername.ToLower())return BadRequest("do not message yourself");
+        // ✅ CONTRAINTE OCL : interdire les messages vides ou avec juste des espaces
+        if (string.IsNullOrWhiteSpace(messagecreate.Content) || messagecreate.Content.Trim().Length == 0)
+            return BadRequest("🚫 Le contenu du message ne peut pas être vide");
         var sender =await  _unitOfWork.UsersService.GetUserByUsernameAsync(username);
         var receiver =  await  _unitOfWork.UsersService.GetUserByUsernameAsync(messagecreate.TargetUsername);
         if(sender == null || receiver==null)return BadRequest("can not send message");

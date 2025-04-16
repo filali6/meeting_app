@@ -39,6 +39,11 @@ public class MessageHub(IUnitOfWork unitOfWork,
         var username = Context.User?.getUsernameFromToken() ?? throw new HubException("can not get user");
         if (username == null) throw new HubException("user not identified");
         if (username.ToLower() == creatMessageDTO.TargetUsername.ToLower()) throw new HubException("do not message yourself");
+        
+        // ✅ CONTRAINTE OCL : empêche l'envoi de message vide
+        if (string.IsNullOrWhiteSpace(creatMessageDTO.Content) || creatMessageDTO.Content.Trim().Length == 0)
+            throw new HubException("🚫 Le message ne peut pas être vide");
+
         var sender = await  unitOfWork.UsersService.GetUserByUsernameAsync(username);
         var receiver = await  unitOfWork.UsersService.GetUserByUsernameAsync(creatMessageDTO.TargetUsername);
         if (sender == null || receiver == null) throw new HubException("can not send message");
