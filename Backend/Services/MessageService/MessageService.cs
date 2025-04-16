@@ -85,6 +85,10 @@ public class MessageService(DataContext context,IMapper mapper): IMessageService
     {
         _context.Connections.Remove(connection);
     }
+    public Message CreateMessage(AppUser sender, AppUser receiver, string content) 
+    { Console.WriteLine("📦 Message créé via GRASP Creator"); 
+    return new Message { SourceUser = sender, SourceUserId = sender.Id, TargetUser = receiver,
+     TargetUserId = receiver.Id, Content = content, SentDate = DateTime.UtcNow }; }
 
 
 }

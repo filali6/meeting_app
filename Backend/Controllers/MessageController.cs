@@ -24,14 +24,9 @@ public class MessageController(IUnitOfWork _unitOfWork , IMapper mapper ):BaseAp
         var sender =await  _unitOfWork.UsersService.GetUserByUsernameAsync(username);
         var receiver =  await  _unitOfWork.UsersService.GetUserByUsernameAsync(messagecreate.TargetUsername);
         if(sender == null || receiver==null)return BadRequest("can not send message");
-        Message newMessage = new()
-        {
-            SourceUser=sender,
-            SourceUserId = sender.Id,
-            TargetUser=receiver,
-            TargetUserId = receiver.Id,
-            Content=messagecreate.Content
-        };
+         Console.WriteLine("📨 Avant appel à CreateMessage dans MessageController");
+        var newMessage = _unitOfWork.MessageService.CreateMessage(sender, receiver, messagecreate.Content);
+        Console.WriteLine("📨 Après appel à CreateMessage dans MessageController");
          _unitOfWork.MessageService.AddMessage(newMessage);
         if(await  _unitOfWork.Complete())return Ok(mapper.Map<MessageDTO>(newMessage));
         else return BadRequest("can not send message");

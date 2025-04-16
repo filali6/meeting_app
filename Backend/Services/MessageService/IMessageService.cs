@@ -17,4 +17,5 @@ public interface IMessageService
     Task<Connection?> GetConnection(string connectionId);
     Task<Group?> GetGroup(string groupName);
     Task<Group?> GetGroupFromConnection(string connectionId);
+    Message CreateMessage(AppUser sender, AppUser receiver, string content);
 }

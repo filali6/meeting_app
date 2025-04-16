@@ -42,14 +42,11 @@ public class MessageHub(IUnitOfWork unitOfWork,
         var sender = await  unitOfWork.UsersService.GetUserByUsernameAsync(username);
         var receiver = await  unitOfWork.UsersService.GetUserByUsernameAsync(creatMessageDTO.TargetUsername);
         if (sender == null || receiver == null) throw new HubException("can not send message");
-        Message newMessage = new()
-        {
-            SourceUser = sender,
-            SourceUserId = sender.Id,
-            TargetUser = receiver,
-            TargetUserId = receiver.Id,
-            Content = creatMessageDTO.Content
-        };
+
+Console.WriteLine("🛰️ [SignalR] Avant appel à CreateMessage");
+       var newMessage = unitOfWork.MessageService.CreateMessage(sender, receiver, creatMessageDTO.Content);
+Console.WriteLine("📦 [SignalR] Message créé via GRASP Creator");
+
         var groupName = GetGroupName(receiver.UserName!, sender.UserName!);
         var group = await unitOfWork.MessageService.GetGroup(groupName);
         if (group != null && group.Connections.Any(x => x.Username == receiver.UserName))
