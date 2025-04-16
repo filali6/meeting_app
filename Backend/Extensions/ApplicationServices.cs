@@ -30,7 +30,11 @@ public static class ApplicationServices
         collection.AddScoped<IAccountService,AccountService>();
         collection.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         collection.Configure<CloudinarySettings>(conf.GetSection("CloudinarySettings"));
-        collection.AddScoped<IPhotoService,PhotoService>();
+        
+      //collection.AddScoped<IPhotoService,PhotoService>();
+        // on remplacé ici par le adapter 
+        collection.AddScoped<IPhotoService, CloudinaryAdapter>();
+
         collection.AddScoped<ILikesService,LikesService>();
         collection.AddScoped<IMessageService,MessageService>();
         collection.AddScoped<IUnitOfWork,UnitOfWork>();
