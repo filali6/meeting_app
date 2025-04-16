@@ -12,6 +12,7 @@ using Backend.SiognalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
+using Backend.Services.UsersService.Strategy;
 
 namespace Backend.Extensions;
 
@@ -37,6 +38,8 @@ public static class ApplicationServices
         collection.AddScoped<LastActive>();
         collection.AddSignalR();
         collection.AddSingleton<PresenceTracker>();
+        collection.AddScoped<IUserFilterStrategy, GenderFilterStrategy>();
+        
         return collection;
 
     }
