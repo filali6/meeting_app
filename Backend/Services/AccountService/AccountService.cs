@@ -19,11 +19,12 @@ public class AccountService(UserManager<AppUser> userManager, IConfiguration con
 {
     private IMapper _mapper = mapper;
     private IConfiguration _conf = conf;
+    UserManager<AppUser> userManager= userManager;
     public async Task<GetUserLoginDTO?> LoginAsync(LoginDTO loginUser)
     {
         AppUser? user = await userManager.Users
             .Include(u => u.Photos)
-            .FirstOrDefaultAsync(x => x.UserName == loginUser.username);
+            .FirstOrDefaultAsync(x => x.NormalizedUserName == loginUser.username.ToUpper());
         if (user == null) return null;
        var resultPasswordCheck=await userManager.CheckPasswordAsync(user,loginUser.password);
        if(!resultPasswordCheck) return null;
@@ -43,6 +44,7 @@ public class AccountService(UserManager<AppUser> userManager, IConfiguration con
         AppUser user = _mapper.Map<AppUser>(registerUser);
         
         await userManager.CreateAsync(user,registerUser.password);
+        await userManager.AddToRoleAsync(user,"member");
         var token = await CreateToken(user);
         var photos = user.Photos.FirstOrDefault(a => a.IsMain);
         if(user.UserName==null) throw new Exception("no username for user");

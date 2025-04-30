@@ -48,7 +48,7 @@ public static class IdentityServices
     });
         services.AddAuthorizationBuilder()
                 .AddPolicy(Policies.RequireAdminRole, policy => policy.RequireRole(Roles.Admin))
-                .AddPolicy(Policies.ModeratePhotoRole, policy => policy.RequireRole(Roles.Admin, Roles.Moderator));
+                .AddPolicy(Policies.ModeratePhotoRole, policy => policy.RequireRole( Roles.Moderator));
         return services;
     }
 }
